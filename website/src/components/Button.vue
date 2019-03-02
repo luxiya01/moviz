@@ -2,15 +2,12 @@
   <div class="datatype">
     <b-form-group label="">
       <b-form-radio-group
-        id="btnradios1"
         buttons
         v-model="selected"
-        v-on:change="do_something"
+        v-on:change="signalChange"
         :options="options"
       />
     </b-form-group>
-    <p>{{selected}}</p>
-    <p>{{count}}</p>
   </div>
 </template>
 
@@ -18,19 +15,16 @@
 
 export default {
   name: 'Button',
+  props: ['options'],
     data() {
         return {
-            selected: 'revenue',
-            options: [
-                {text: 'Revenue', value: 'revenue'},
-                {text: 'Average IMDB Rating', value: 'imbd-rating'}
-            ],
+            selected: '',
             count: 0
         }
     },
     methods: {
-        do_something:function(){
-            this.count++;
+        signalChange: function(evt) {
+            this.$emit('selection-change',evt);
         }
     }
 }
