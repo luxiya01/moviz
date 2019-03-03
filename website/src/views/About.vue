@@ -17,7 +17,7 @@
       <div id="tools" class="container">
         <h4><b>TOOLS</b></h4>
         <div class="row">
-          <img id="d3Desc" src="../assets/d3.png" alt="d3.js">
+          <img id="d3Desc" src="../assets/d3.svg" alt="d3.js">
           <i id="vueDesc" class="fab fa-4x fa-vuejs"></i>
           <i id="githubDesc" variant="outline-success" class="fab fa-4x fa-github"></i>
           <i id="messengerDesc" class="fab fa-4x fa-facebook-messenger"></i>
@@ -44,7 +44,29 @@
 
   <b-modal hide-footer v-model="modalShow1">Hello 1 Modal!</b-modal>
 
-  <b-modal hide-footer v-model="modalShow2">Hello 2 Modal!</b-modal>
+  <b-modal hide-footer v-model="modalShow2">
+    <div class="container" align="center">
+      <div class="linette members"> </div>
+      <h2> Linette Nilsson </h2>
+      <h4> Front-end/UX</h4>
+    </div>
+    <br/>
+    <div>
+      <h3>Contributions</h3>
+      <pre align="left"> 
+        - one
+        - two
+        - three
+      </pre>
+
+      <h3>What I learned</h3>
+      <pre align="left"> 
+        - one
+        - two
+        - three
+      </pre>
+    </div>
+  </b-modal>
 
   <b-modal hide-footer v-model="modalShow3">Hello 3 Modal!</b-modal>
 
@@ -62,7 +84,7 @@
             <div > 
               <div @click="modalShow1 = !modalShow1" class="members">
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
               <p>NAME</p>
@@ -72,13 +94,13 @@
             </div>
 
             <div >
-              <div @click="modalShow2 = !modalShow2" class="members">
+              <div @click="modalShow2 = !modalShow2" class="linette members">
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
-              <p>NAME</p>
-              <p>POSITION</p>              
+              <p>Linette Nilsson</p>
+              <p>Front-end/UX</p>              
               <a href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
             </div
@@ -86,7 +108,7 @@
             <div >
               <div @click="modalShow3 = !modalShow3" class="members">
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
               <p>NAME</p>
@@ -100,7 +122,7 @@
             <div >
               <div @click="modalShow4 = !modalShow4" class="members">
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
               <p>NAME</p>
@@ -112,7 +134,7 @@
             <div >
               <div @click="modalShow5 = !modalShow5" class="members">
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
               <p>NAME</p>
@@ -124,7 +146,7 @@
             <div >
               <div @click="modalShow6 = !modalShow6" class="members"> 
                 <div class="overlay">
-                  <div class="text">Click to see my contributions!</div>
+                  <b class="text">View my contributions!</b>
                 </div>
               </div>
               <p>NAME</p>
@@ -137,7 +159,11 @@
         </div>
       </div>
     </div>
+
+
   </div>
+
+  
 
 
   
@@ -147,6 +173,10 @@
 
 
 <style>
+.linette {
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/linette.jpg?alt=media&token=fcdef7d7-ad69-47f5-a460-085ae3244176");
+  background-size: cover;
+}
 a{
   color:inherit;
   text-decoration: none;
@@ -167,7 +197,8 @@ p {
 
 }
 #d3Desc{
-  height: 4em;
+  margin-top: .4em;
+  height: 3em;
 }
 .fab {
   margin-left: .2em;
@@ -180,7 +211,7 @@ p {
   position: relative;
   /*width: 50%;*/
   border-radius: 15px;
-  background: #502c2e;;
+  /*background: #502c2e;*/
   padding: 20px; 
   margin: 2em 2em 0 2em;
   width: 200px;
@@ -204,7 +235,7 @@ p {
   border-radius: 15px;
   opacity: 0;
   transition: .3s ease;
-  background-color: #b8292975;
+  background-color: #00000098;
 }
 
 .members:hover .overlay {
@@ -226,6 +257,7 @@ p {
 
 </style>
 <script>
+
   export default {
     data() {
       return {
@@ -234,7 +266,7 @@ p {
         modalShow3: false,
         modalShow4: false,
         modalShow5: false,
-        modalShow6: false
+        modalShow6: false,
       }
     }
   }
