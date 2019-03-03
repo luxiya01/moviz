@@ -1,12 +1,3 @@
-class Movie {
-    constructor(title, year, link, director, img) {
-        this.title = title;
-        this.year = year;
-        this.link = link;
-        this.director = director;
-        this.img = img;
-    }
-}
 
 const app = new Vue ({
     el: '#app',
@@ -14,80 +5,40 @@ const app = new Vue ({
         search: '',
         selectedMovieID: "",
         selectedMovieName: "",
+        selectedSortingOrder: null, // this holds the current sorting function, e.g. sort by alphabet or by rating
+        currentScrollPosition: 0,
+        updateCurrentScrollPosition: false,
+        posterPlaceHolder: "poster-placeholder.jpg",
         isSelected: false,
-        postList : [
-            new Movie(
-                'Alita: Battle Angel',
-                '2018',
-                'https://www.imdb.com/title/tt0437086',
-                'Chris',
-                'https://m.media-amazon.com/images/M/MV5BNzVhMjcxYjYtOTVhOS00MzQ1LWFiNTAtZmY2ZmJjNjIxMjllXkEyXkFqcGdeQXVyNTc5OTMwOTQ@._V1_.jpg'
-            ),
-            new Movie(
-                'Wall-E',
-                '2008',
-                'https://www.imdb.com/title/tt0910970',
-                'Tim',
-                'https://m.media-amazon.com/images/M/MV5BMjExMTg5OTU0NF5BMl5BanBnXkFtZTcwMjMxMzMzMw@@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-            ),
-            new Movie(
-                'The Shawshank Redemption',
-                '2018',
-                'https://www.imdb.com/title/tt0111161',
-                'Sam',
-                'https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg'
-            ),
-            new Movie(
-                'Schindler\'s List',
-                '2018',
-                'https://www.imdb.com/title/tt0108052',
-                'Rachel',
-                'https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY1000_CR0,0,666,1000_AL_.jpg'
-            ),
-            new Movie(
-                'Toy Story',
-                '2018',
-                'https://www.imdb.com/title/tt0114709',
-                'Chris',
-                'https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SY1000_SX670_AL_.jpg'
-            ),
-            new Movie(
-                'Avengers: Infinity War',
-                '2018',
-                'https://www.imdb.com/title/tt4154756',
-                'Tim',
-                'https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-            ),
-            new Movie(
-                'Black Panther',
-                '2018',
-                'https://www.imdb.com/title/tt1825683',
-                'A. A. Ron',
-                'https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-            ),
-            new Movie(
-                'Oldboy',
-                '2018',
-                'https://www.imdb.com/title/tt0364569',
-                'Alex',
-                'https://m.media-amazon.com/images/M/MV5BMTI3NTQyMzU5M15BMl5BanBnXkFtZTcwMTM2MjgyMQ@@._V1_.jpg'
-            ),
-            new Movie(
-                'The Imitation Game',
-                '2018',
-                'https://www.imdb.com/title/tt2084970',
-                'Chuck',
-                'https://m.media-amazon.com/images/M/MV5BOTgwMzFiMWYtZDhlNS00ODNkLWJiODAtZDVhNzgyNzJhYjQ4L2ltYWdlXkEyXkFqcGdeQXVyNzEzOTYxNTQ@._V1_SY999_CR0,0,670,999_AL_.jpg'
-            ),
-        ],
         movieList : []
     },
     methods: {
-        compare : function (a,b) {
+        // these three functions all sort in ascending order
+        alphabeticOrder : function (a, b) {
             if(a.title < b.title) {
                 return -1;
             } else if(a.title > b.title) {
                 return 1;
+            } else {
+                return 0;
+            }
+        },
+        ratingOrder : function (a, b) {
+            if(+a.rating < +b.rating) {
+                return 1;
+            } else if(+a.rating > +b.rating) {
+                return -1;
+            } else {
+                return 0;
+            }
+        },
+        revenueOrder : function (a, b) {
+            var aTotal = +a['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +a['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
+            var bTotal = +b['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +b['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
+            if(aTotal < bTotal) {
+                return 1;
+            } else if(aTotal > bTotal) {
+                return -1;
             } else {
                 return 0;
             }
@@ -98,32 +49,103 @@ const app = new Vue ({
                 this.selectedMovieName = movie.title;
                 this.isSelected = true;
                 this.search = this.selectedMovieName;
+                this.currentScrollPosition = $(".wrapper").scrollTop();
             } else {
                 //TODO: perhaps change this so that this happens when you click on a reset button instead of the entire card
                 this.isSelected = false;
                 this.selectedMovieName = "";
                 this.search = "";
+                this.updateCurrentScrollPosition = true;
             }
         },
         hasSearchBarChanged() {
-
             if(this.search !== this.selectedMovieName){
                 this.isSelected = false;
                 this.selectedMovieName = "";
             }
+            this.currentScrollPosition = 0;
+            this.updateCurrentScrollPosition = true;
+        },
+        hasSortingOrderChanged(sortingOrder) {
+            if(sortingOrder === this.alphabeticOrder && this.selectedSortingOrder !== this.alphabeticOrder) {
+                this.selectedSortingOrder = this.alphabeticOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            } else if(sortingOrder === this.ratingOrder && this.selectedSortingOrder !== this.ratingOrder) {
+                this.selectedSortingOrder = this.ratingOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            } else if(sortingOrder === this.revenueOrder && this.selectedSortingOrder !== this.revenueOrder) {
+                this.selectedSortingOrder = this.revenueOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            }
+        },
+        getImage(movie) {
+            if(movie.img !== "") {
+                return movie.img;
+            }
+            else {
+                return this.posterPlaceHolder;
+            }
+        },
+        getLink(movie) {
+            return "https://www.imdb.com/title/" + movie.link;
         }
     },
     computed: {
         filteredList() {
-            return this.movieList.filter(post => {
-                return post.title.toLowerCase().includes(this.search.toLowerCase());
-            }).sort(this.compare) // <-- added sorting!
+            /* Filter and Sort in Alphabetic order*/
+            if(this.selectedSortingOrder === this.alphabeticOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase());
+                }).sort(this.selectedSortingOrder).slice(0,700) // sorts and slices it for display
+            }
+            /* Filter and Sort in Rating order*/
+            else if(this.selectedSortingOrder === this.ratingOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating !== undefined;
+                }).sort(this.selectedSortingOrder).slice(0,700)
+                    // add the remaining movies that are without ratings
+                    .concat(this.movieList.filter(post => {
+                        return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating === undefined;
+                    }).sort(this.alphabeticOrder)) // sort alphabetically
+            }
+            /* Filter and Sort in Revenue order*/
+            else if(this.selectedSortingOrder === this.revenueOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
+                        (post['Domestic Total Gross'] !== undefined && post['Foreign Total Gross'] !== undefined);
+                }).sort(this.selectedSortingOrder).slice(0,700)
+                    // add the remaining movies that are missing either one or both of the total grosses
+                    .concat(this.movieList.filter(post => {
+                        return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
+                            (post['Domestic Total Gross'] === undefined || post['Foreign Total Gross'] === undefined)
+                    }).sort(this.alphabeticOrder))  // sort alphabetically
+            }
+        }
+    },
+
+    /*this runs after data, methods and computed have been created
+      we need to add the sorting function here to prevent exceptions*/
+    created: function () {
+        this.selectedSortingOrder = this.alphabeticOrder;
+    },
+    /*this is called after a data change */
+    updated: function () {
+        if(this.updateCurrentScrollPosition) {
+            $('.wrapper').scrollTop(this.currentScrollPosition);
+            this.updateCurrentScrollPosition = false;
         }
     }
 });
 
 // this function has to be outside the app object and refer to app.LISTNAME in order for it to work
-$.getJSON("first_600_movies.json", function (data) {
-    app.movieList = Object.values(data).slice(0,20);
-    console.log(app.movieList);
+$.getJSON("movieDataBase.json", function (data) {
+    app.movieList = Object.values(data);
 });
+
+var a = "Riddick\u00a0(2013)            ";
+a = a.replace(/\s+/g, '')
+
+console.log(a);

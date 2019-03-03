@@ -12,29 +12,50 @@
 <div id="app">
     <div class="search-wrapper">
         <input type="text" v-model="search" placeholder="Search movie title.." v-on:keydown="hasSearchBarChanged"/>
-        <label>Search movie:</label>
+
+    </div>
+
+    <!-- > Sorting Options <-->
+    <div class="options">
+        <label class="checkcontainer">
+            A-Z
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(alphabeticOrder)" checked>
+            <span class="radiobtn"></span>
+        </label>
+        <label class="checkcontainer">
+            Rating
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(ratingOrder)">
+            <span class="radiobtn"></span>
+        </label>
+        <label class="checkcontainer">
+            Revenue
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(revenueOrder)">
+            <span class="radiobtn"></span>
+        </label>
     </div>
 
     <div class="wrapper">
         <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)">
             <div class="topCard">
-                <img v-bind:src="postList[0].img"/>
-                <p>{{movie.title}}</p>
+                <img v-bind:src="getImage(movie)"/>
+                <p>{{movie.title}}<br/>
+                    {{movie.rating}}<br/>
+                    {{movie['Foreign Total Gross']}}<br/>
+                    {{movie['Domestic Total Gross']}}</p>
             </div>
-            <transition name="roll">
+            <!-- ><transition name="roll"><-->
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
                     <p>Director: ??</p>
                     <p>Rating: {{movie.rating}}</p>
                     <p>Budget: {{movie.Budget}}</p>
                     <p>Production Country: {{movie.Country}}</p>
                     <p>Genres: {{movie.genres}}</p>
-                    <p><a v-bind:href="'https://www.imdb.com/title/' + movie.link" target="_blank"> {{movie.title}} </a> </p>
+                    <p><a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> </p>
 
                 </div>
-            </transition>
+            <!-- ></transition><-->
         </div>
     </div>
-
 </div>
 <script src="searchScript.js"></script>
 </body>
