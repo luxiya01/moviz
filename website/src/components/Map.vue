@@ -79,6 +79,7 @@ export default {
 
       var countryarray = Object.entries(selectedmovierevenue);
 
+      var revenuelist;
       // placeholder revenue
       var newrevenuelist = {};
 
@@ -95,22 +96,19 @@ export default {
       newrevenuelist["USA"] = +usarevenue;
 
       // update revenue list
-      this.revenuelist = newrevenuelist;
+      revenuelist = newrevenuelist;
 
-      var min = d3.min(Object.values(this.revenuelist))
-      var max = d3.max(Object.values(this.revenuelist))
+      var min = d3.min(Object.values(revenuelist))
+      var max = d3.max(Object.values(revenuelist))
 
       var colScale = this.colScale;
       // set the domain for the colors
       colScale.domain([min,max]);
 
-      console.log(this.features);
-      console.log(this.features.selectAll('path'));
       // repaint the countries
       this.features.selectAll("path")
         .style("fill", function (d,i) {
-            console.log(d);
-          return (this.revenuelist[d.properties.name] ? colScale(this.revenuelist[d.properties.name]) : "#ccc");
+          return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc");
         });
     },
     // Zoom to feature on click
@@ -119,7 +117,6 @@ export default {
       //Add any other onClick events here
 
       var x, y, k;
-      console.log(this);
 
       if (d && this.centered !== d) {
         // Compute the new map center and scale to zoom to
@@ -232,3 +229,37 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+body {
+  font: 18px sans-serif;
+}
+
+path {
+  stroke-width: 1px;
+  stroke: white;
+  fill: steelblue;
+  cursor: pointer;
+}
+
+path:hover, path.highlighted {
+  fill: tomato;
+}
+
+.tooltip_key {
+  font-weight: bold;
+}
+.tooltip_value {
+  margin-left: 20px;
+  float: right;
+}
+
+div.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  padding: 4px 8px;
+  display: none;
+}
+</style>
