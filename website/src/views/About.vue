@@ -9,7 +9,7 @@
     <div  class="container">
       <div id="project" class="container">
         <h3><b>PROJECT</b></h3>
-        <!--<font-awesome-icon icon="coffee" />        -->
+        <!--<font-awesome-icon icon="coffee" /> -->
         <div class="row">
           <p>SUMMARY OF OUR PROJECT</p>
         </div>
@@ -42,39 +42,6 @@
   </b-tooltip>
 
 
-  <b-modal hide-footer v-model="modalShow1">Hello 1 Modal!</b-modal>
-
-  <b-modal hide-footer v-model="modalShow2">
-    <div class="container" align="center">
-      <div class="linette members"> </div>
-      <h2> Linette Nilsson </h2>
-      <h4> Front-end/UX</h4>
-    </div>
-    <br/>
-    <div>
-      <h3>Contributions</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
-
-      <h3>What I learned</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
-    </div>
-  </b-modal>
-
-  <b-modal hide-footer v-model="modalShow3">Hello 3 Modal!</b-modal>
-
-  <b-modal hide-footer v-model="modalShow4">Hello 4 Modal!</b-modal>
-
-  <b-modal hide-footer v-model="modalShow5">Hello 5 Modal!</b-modal>
-
-  <b-modal hide-footer v-model="modalShow6">Hello 6 Modal!</b-modal>
 
 
       <div id="team">
@@ -161,6 +128,40 @@
     </div>
 
 
+<!-- MODAL HERE-->
+  <b-modal hide-footer v-model="modalShow1">Hello 1 Modal!</b-modal>
+
+  <b-modal hide-footer v-model="modalShow2">
+    <div class="container" align="center">
+      <div class="linette members"> </div>
+      <h2> Linette Nilsson </h2>
+      <h4> Front-end/UX</h4>
+    </div>
+    <br/>
+    <div>
+      <h3>Contributions</h3>
+      <pre align="left"> 
+        - one
+        - two
+        - three
+      </pre>
+
+      <h3>What I learned</h3>
+      <pre align="left"> 
+        - one
+        - two
+        - three
+      </pre>
+    </div>
+  </b-modal>
+
+  <b-modal hide-footer v-model="modalShow3">Hello 3 Modal!</b-modal>
+
+  <b-modal hide-footer v-model="modalShow4">Hello 4 Modal!</b-modal>
+
+  <b-modal hide-footer v-model="modalShow5">Hello 5 Modal!</b-modal>
+
+  <b-modal hide-footer v-model="modalShow6">Hello 6 Modal!</b-modal>
   </div>
 
   
