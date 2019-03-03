@@ -44,45 +44,57 @@ div#app .search-wrapper input::-webkit-input-placeholder {
     color: rgba(0, 0, 0, .50);
     font-weight: 100;
 }
+
+
+
+
 div#app .wrapper {
-    display: flex;
-    max-width: 390px;
-    flex-wrap: wrap;
+    display: block;
+    width: 390px;
+    height: 600px;
+    overflow: auto;
+    /*flex-wrap: wrap;*/
     padding-top: 12px;
+    /*This can be removed when finished*/
+    border-style: solid;
+    border-width: 1px;
+    border-color: #d9d9d9;
+
 }
 div#app .card {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
-    max-width: 124px;
-    margin: 12px auto;
+    /*max-width: 124px;*/
+    margin: 12px 0;
     transition: 0.15s all ease-in-out;
 }
 div#app .card:hover {
-    transform: scale(1.1);
+    /*transform: scale(1.1);*/
+    background-color: #d8ffe8;
 }
-div#app .card a {
+div#app .card .topCard{
     text-decoration: none;
     /*padding: 12px;*/
     color: #03a9f4;
     font-size: 24px;
-    display: flex;
+    /*display: flex;*/
     flex-direction: column;
     align-items: center;
-}
-div#app .card a img {
     height: 150px;
+    cursor: pointer;
 }
-div#app .card a small {
-    font-size: 10px;
-    padding: 4px;
+div#app .card img {
+    height: inherit;
+    float: left;
 }
-div#app .hotpink {
-    background: hotpink;
+
+div #app .card .bottomCard {
+
 }
-div#app .green {
-    background: green;
+
+
+.roll-enter-active, .roll-leave-active {
+    transition: opacity .5s;
 }
-div#app .box {
-    width: 100px;
-    height: 100px;
-    border: 1px solid rgba(0, 0, 0, .12);
+.roll-enter, .roll-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
 }
