@@ -227,6 +227,7 @@ div#app .card {
     /*max-width: 124px;*/
     margin: 12px 0;
     transition: 0.15s all ease-in-out;
+    text-align: left;
 }
 div#app .card:hover {
     /*transform: scale(1.1);*/
