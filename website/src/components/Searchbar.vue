@@ -2,30 +2,56 @@
 <div id="searchbar">
     <div class="search-wrapper">
         <input type="text" v-model="search" placeholder="Search movie title.." v-on:keydown="hasSearchBarChanged"/>
-        <label>Search movie:</label>
     </div>
+
+    <!-- > Sorting Options <-->
+    <div class="options">
+        <label class="checkcontainer">
+            A-Z
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(alphabeticOrder)" checked>
+            <span class="radiobtn"></span>
+        </label>
+        <label class="checkcontainer">
+            Rating
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(ratingOrder)">
+            <span class="radiobtn"></span>
+        </label>
+        <label class="checkcontainer">
+            Revenue
+            <input type="radio" name="sorting" v-on:click="hasSortingOrderChanged(revenueOrder)">
+            <span class="radiobtn"></span>
+        </label>
+    </div>
+
     <div class="wrapper">
         <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)">
             <div class="topCard">
-                <img v-bind:src="postList[0].img"/>
-                <p>{{movie.title}}</p>
+                <img v-bind:src="getImage(movie)"/>
+                <p>{{movie.title}}<br/>
+                    {{movie.rating}}<br/>
+                    {{movie['Foreign Total Gross']}}<br/>
+                    {{movie['Domestic Total Gross']}}</p>
             </div>
-            <transition name="roll">
+            <!-- ><transition name="roll"><-->
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
                     <p>Director: ??</p>
                     <p>Rating: {{movie.rating}}</p>
                     <p>Budget: {{movie.Budget}}</p>
                     <p>Production Country: {{movie.Country}}</p>
                     <p>Genres: {{movie.genres}}</p>
-                    <p><a v-bind:href="'https://www.imdb.com/title/' + movie.link" target="_blank"> {{movie.title}} </a> </p>
+                    <p><a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> </p>
+
                 </div>
-            </transition>
+            <!-- ></transition><-->
         </div>
     </div>
 </div>
 </template>
 
 <script>
+import JQuery from 'jquery'
+let $=JQuery
+
 class Movie {
     constructor(title, year, link, director, img) {
         this.title = title;
@@ -42,84 +68,43 @@ export default {
     },
     data() {
         return {
-            search: "",
+            search: '',
             selectedMovieID: "",
             selectedMovieName: "",
+            selectedSortingOrder: null, // this holds the current sorting function, e.g. sort by alphabet or by rating
+            currentScrollPosition: 0,
+            updateCurrentScrollPosition: false,
+            posterPlaceHolder: "poster-placeholder.jpg",
             isSelected: false,
-            postList : [
-                new Movie(
-                    'Alita: Battle Angel',
-                    '2018',
-                    'https://www.imdb.com/title/tt0437086',
-                    'Chris',
-                    'https://m.media-amazon.com/images/M/MV5BNzVhMjcxYjYtOTVhOS00MzQ1LWFiNTAtZmY2ZmJjNjIxMjllXkEyXkFqcGdeQXVyNTc5OTMwOTQ@._V1_.jpg'
-                ),
-                new Movie(
-                    'Wall-E',
-                    '2008',
-                    'https://www.imdb.com/title/tt0910970',
-                    'Tim',
-                    'https://m.media-amazon.com/images/M/MV5BMjExMTg5OTU0NF5BMl5BanBnXkFtZTcwMjMxMzMzMw@@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-                ),
-                new Movie(
-                    'The Shawshank Redemption',
-                    '2018',
-                    'https://www.imdb.com/title/tt0111161',
-                    'Sam',
-                    'https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg'
-                ),
-                new Movie(
-                    'Schindler\'s List',
-                    '2018',
-                    'https://www.imdb.com/title/tt0108052',
-                    'Rachel',
-                    'https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY1000_CR0,0,666,1000_AL_.jpg'
-                ),
-                new Movie(
-                    'Toy Story',
-                    '2018',
-                    'https://www.imdb.com/title/tt0114709',
-                    'Chris',
-                    'https://m.media-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SY1000_SX670_AL_.jpg'
-                ),
-                new Movie(
-                    'Avengers: Infinity War',
-                    '2018',
-                    'https://www.imdb.com/title/tt4154756',
-                    'Tim',
-                    'https://m.media-amazon.com/images/M/MV5BMjMxNjY2MDU1OV5BMl5BanBnXkFtZTgwNzY1MTUwNTM@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-                ),
-                new Movie(
-                    'Black Panther',
-                    '2018',
-                    'https://www.imdb.com/title/tt1825683',
-                    'A. A. Ron',
-                    'https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
-                ),
-                new Movie(
-                    'Oldboy',
-                    '2018',
-                    'https://www.imdb.com/title/tt0364569',
-                    'Alex',
-                    'https://m.media-amazon.com/images/M/MV5BMTI3NTQyMzU5M15BMl5BanBnXkFtZTcwMTM2MjgyMQ@@._V1_.jpg'
-                ),
-                new Movie(
-                    'The Imitation Game',
-                    '2018',
-                    'https://www.imdb.com/title/tt2084970',
-                    'Chuck',
-                    'https://m.media-amazon.com/images/M/MV5BOTgwMzFiMWYtZDhlNS00ODNkLWJiODAtZDVhNzgyNzJhYjQ4L2ltYWdlXkEyXkFqcGdeQXVyNzEzOTYxNTQ@._V1_SY999_CR0,0,670,999_AL_.jpg'
-                ),
-            ],
-
         }
     },
     methods: {
-        compare : function (a,b) {
+        // these three functions all sort in ascending order
+        alphabeticOrder : function (a, b) {
             if(a.title < b.title) {
                 return -1;
             } else if(a.title > b.title) {
                 return 1;
+            } else {
+                return 0;
+            }
+        },
+        ratingOrder : function (a, b) {
+            if(+a.rating < +b.rating) {
+                return 1;
+            } else if(+a.rating > +b.rating) {
+                return -1;
+            } else {
+                return 0;
+            }
+        },
+        revenueOrder : function (a, b) {
+            var aTotal = +a['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +a['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
+            var bTotal = +b['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +b['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
+            if(aTotal < bTotal) {
+                return 1;
+            } else if(aTotal > bTotal) {
+                return -1;
             } else {
                 return 0;
             }
@@ -130,35 +115,103 @@ export default {
                 this.selectedMovieName = movie.title;
                 this.isSelected = true;
                 this.search = this.selectedMovieName;
+                this.currentScrollPosition = $(".wrapper").scrollTop();
             } else {
                 //TODO: perhaps change this so that this happens when you click on a reset button instead of the entire card
                 this.isSelected = false;
                 this.selectedMovieName = "";
                 this.search = "";
+                this.updateCurrentScrollPosition = true;
             }
             this.$emit('movie-selection', movie.id);
         },
         hasSearchBarChanged() {
-
             if(this.search !== this.selectedMovieName){
                 this.isSelected = false;
                 this.selectedMovieName = "";
             }
+            this.currentScrollPosition = 0;
+            this.updateCurrentScrollPosition = true;
+        },
+        hasSortingOrderChanged(sortingOrder) {
+            if(sortingOrder === this.alphabeticOrder && this.selectedSortingOrder !== this.alphabeticOrder) {
+                this.selectedSortingOrder = this.alphabeticOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            } else if(sortingOrder === this.ratingOrder && this.selectedSortingOrder !== this.ratingOrder) {
+                this.selectedSortingOrder = this.ratingOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            } else if(sortingOrder === this.revenueOrder && this.selectedSortingOrder !== this.revenueOrder) {
+                this.selectedSortingOrder = this.revenueOrder;
+                this.currentScrollPosition = 0;
+                this.updateCurrentScrollPosition = true;
+            }
+        },
+        getImage(movie) {
+            if(movie.img !== "") {
+                return movie.img;
+            }
+            else {
+                return this.posterPlaceHolder;
+            }
+        },
+        getLink(movie) {
+            return "https://www.imdb.com/title/" + movie.link;
         }
     },
     computed: {
         filteredList() {
-            return this.movieList.filter(post => {
-                return post.title.toLowerCase().includes(this.search.toLowerCase());
-            }).sort(this.compare) // <-- added sorting!
+            /* Filter and Sort in Alphabetic order*/
+            if(this.selectedSortingOrder === this.alphabeticOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase());
+                }).sort(this.selectedSortingOrder).slice(0,700) // sorts and slices it for display
+            }
+            /* Filter and Sort in Rating order*/
+            else if(this.selectedSortingOrder === this.ratingOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating !== undefined;
+                }).sort(this.selectedSortingOrder).slice(0,700)
+                    // add the remaining movies that are without ratings
+                    .concat(this.movieList.filter(post => {
+                        return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating === undefined;
+                    }).sort(this.alphabeticOrder)) // sort alphabetically
+            }
+            /* Filter and Sort in Revenue order*/
+            else if(this.selectedSortingOrder === this.revenueOrder) {
+                return this.movieList.filter(post => {
+                    return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
+                        (post['Domestic Total Gross'] !== undefined && post['Foreign Total Gross'] !== undefined);
+                }).sort(this.selectedSortingOrder).slice(0,700)
+                    // add the remaining movies that are missing either one or both of the total grosses
+                    .concat(this.movieList.filter(post => {
+                        return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
+                            (post['Domestic Total Gross'] === undefined || post['Foreign Total Gross'] === undefined)
+                    }).sort(this.alphabeticOrder))  // sort alphabetically
+            }
+        }
+    },
+
+    /*this runs after data, methods and computed have been created
+      we need to add the sorting function here to prevent exceptions*/
+    created: function () {
+        this.selectedSortingOrder = this.alphabeticOrder;
+    },
+    /*this is called after a data change */
+    updated: function () {
+        if(this.updateCurrentScrollPosition) {
+            $('.wrapper').scrollTop(this.currentScrollPosition);
+            this.updateCurrentScrollPosition = false;
         }
     }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-html, body {
+div#searchbar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,16 +219,16 @@ html, body {
     margin-top: 16px;
     margin-bottom: 16px;
 }
-div#app {
+div#searchbar {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
-div#app .search-wrapper {
+div#searchbar .search-wrapper {
     position: relative;
 }
-div#app .search-wrapper label {
+div#searchbar .search-wrapper label {
     position: absolute;
     font-size: 12px;
     color: rgba(0, 0, 0, .50);
@@ -184,22 +237,22 @@ div#app .search-wrapper label {
     z-index: -1;
     transition: 0.15s all ease-in-out;
 }
-div#app .search-wrapper input {
+div#searchbar .search-wrapper input {
     padding: 4px 12px;
     color: rgba(0, 0, 0, .70);
     border: 1px solid rgba(0, 0, 0, .12);
     transition: 0.15s all ease-in-out;
     background: white;
 }
-div#app .search-wrapper input:focus {
+div#searchbar .search-wrapper input:focus {
     outline: none;
     transform: scale(1.05);
 }
-div#app .search-wrapper input:focus + label {
+div#searchbar .search-wrapper input:focus + label {
     font-size: 10px;
     transform: translateY(-24px) translateX(-12px);
 }
-div#app .search-wrapper input::-webkit-input-placeholder {
+div#searchbar .search-wrapper input::-webkit-input-placeholder {
     font-size: 12px;
     color: rgba(0, 0, 0, .50);
     font-weight: 100;
@@ -208,7 +261,7 @@ div#app .search-wrapper input::-webkit-input-placeholder {
 
 
 
-div#app .wrapper {
+div#searchbar .wrapper {
     display: block;
     width: 390px;
     height: 600px;
@@ -221,34 +274,34 @@ div#app .wrapper {
     border-color: #d9d9d9;
 
 }
-div#app .card {
+div#searchbar .card {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     /*max-width: 124px;*/
     margin: 12px 0;
     transition: 0.15s all ease-in-out;
     text-align: left;
 }
-div#app .card:hover {
+div#searchbar .card:hover {
     /*transform: scale(1.1);*/
     background-color: #d8ffe8;
 }
-div#app .card .topCard{
+div#searchbar .card .topCard{
     text-decoration: none;
     /*padding: 12px;*/
     color: #03a9f4;
-    font-size: 24px;
+    font-size: 20px;
     /*display: flex;*/
     flex-direction: column;
     align-items: center;
     height: 150px;
     cursor: pointer;
 }
-div#app .card img {
+div#searchbar .card img {
     height: inherit;
     float: left;
 }
 
-div #app .card .bottomCard {
+div #searchbar .card .bottomCard {
 
 }
 
