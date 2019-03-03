@@ -19648,7 +19648,6 @@
         "Domestic Total Gross": "$45,385,935",
         "Foreign Total Gross": "$71,100,000",
         "Country Total Gross": {
-            "Domestic Lifetime Gross: $402,828,120": "Domestic Lifetime Gross: $402,828,120",
             "Australia": "$1,792,751",
             "Bolivia": "$117,724",
             "Bulgaria": "$46,186",
@@ -24854,7 +24853,6 @@
             "Nigeria": "$67,608",
             "Peru": "$2,243,467",
             "Poland": "$1,439,133",
-            "Russia": "n/a",
             "Serbia & Montenegro": "$97,584",
             "Slovakia": "$313,918",
             "South Africa": "$625,487",
@@ -33001,7 +32999,6 @@
             "Italy": "$97,478",
             "Peru": "$130,655",
             "Poland": "$523,085",
-            "Romania": "n/a",
             "South Korea": "$163,621"
         },
         "Domestic History": {
@@ -36406,7 +36403,6 @@
             "Nigeria": "$382,720",
             "Peru": "$2,774,775",
             "Poland": "$1,465,609",
-            "Russia": "n/a",
             "Serbia & Montenegro": "$143,243",
             "Slovakia": "$313,085",
             "South Africa": "$1,633,027",
@@ -76444,7 +76440,6 @@
             "Nigeria": "$381,935",
             "Peru": "$3,380,646",
             "Poland": "$1,607,378",
-            "Russia": "n/a",
             "Serbia & Montenegro": "$115,582",
             "Slovakia": "$191,431",
             "South Africa": "$2,045,174",
@@ -76755,9 +76750,7 @@
         ],
         "Domestic Total Gross": "$3,018,873",
         "Foreign Total Gross": "n/a",
-        "Country Total Gross": {
-            "Domestic Lifetime Gross: $179,800,601": "Domestic Lifetime Gross: $179,800,601"
-        },
+        "Country Total Gross": {},
         "Domestic History": {
             "1": {
                 "Year": "2013",
@@ -85640,7 +85633,6 @@
         "Domestic Total Gross": "$125,168,368",
         "Foreign Total Gross": "$46,296,308",
         "Country Total Gross": {
-            "Domestic Lifetime Gross: $127,352,707": "Domestic Lifetime Gross: $127,352,707",
             "Austria": "$92,047",
             "Denmark": "$129,922",
             "Germany": "$698,262",
