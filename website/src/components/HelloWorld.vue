@@ -19,7 +19,7 @@
                     v-on:selection-change="scale=$event"/>
             </div>
         </div>
-        <Map v-bind:moviefile="movieJSON" v-bind:movieid="movieid"/>
+        <Map v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"/>
       </div>
       <div class="col-sm-4">
         <Searchbar v-bind:movieList="movieList"
