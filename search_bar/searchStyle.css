@@ -1,0 +1,100 @@
+html, body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+div#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+div#app .search-wrapper {
+    position: relative;
+}
+div#app .search-wrapper label {
+    position: absolute;
+    font-size: 12px;
+    color: rgba(0, 0, 0, .50);
+    top: 8px;
+    left: 12px;
+    z-index: -1;
+    transition: 0.15s all ease-in-out;
+}
+div#app .search-wrapper input {
+    padding: 4px 12px;
+    color: rgba(0, 0, 0, .70);
+    border: 1px solid rgba(0, 0, 0, .12);
+    transition: 0.15s all ease-in-out;
+    background: white;
+}
+div#app .search-wrapper input:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+div#app .search-wrapper input:focus + label {
+    font-size: 10px;
+    transform: translateY(-24px) translateX(-12px);
+}
+div#app .search-wrapper input::-webkit-input-placeholder {
+    font-size: 12px;
+    color: rgba(0, 0, 0, .50);
+    font-weight: 100;
+}
+
+
+
+
+div#app .wrapper {
+    display: block;
+    width: 390px;
+    height: 600px;
+    overflow: auto;
+    /*flex-wrap: wrap;*/
+    padding-top: 12px;
+    /*This can be removed when finished*/
+    border-style: solid;
+    border-width: 1px;
+    border-color: #d9d9d9;
+
+}
+div#app .card {
+    box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+    /*max-width: 124px;*/
+    margin: 12px 0;
+    transition: 0.15s all ease-in-out;
+}
+div#app .card:hover {
+    /*transform: scale(1.1);*/
+    background-color: #d8ffe8;
+}
+div#app .card .topCard{
+    text-decoration: none;
+    /*padding: 12px;*/
+    color: #03a9f4;
+    font-size: 24px;
+    /*display: flex;*/
+    flex-direction: column;
+    align-items: center;
+    height: 150px;
+    cursor: pointer;
+}
+div#app .card img {
+    height: inherit;
+    float: left;
+}
+
+div #app .card .bottomCard {
+
+}
+
+
+.roll-enter-active, .roll-leave-active {
+    transition: opacity .5s;
+}
+.roll-enter, .roll-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+}

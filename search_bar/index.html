@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Bar</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="searchStyle.css">
+</head>
+<body>
+
+<div id="app">
+    <div class="search-wrapper">
+        <input type="text" v-model="search" placeholder="Search movie title.." v-on:keydown="hasSearchBarChanged"/>
+        <label>Search movie:</label>
+    </div>
+
+    <div class="wrapper">
+        <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)">
+            <div class="topCard">
+                <img v-bind:src="postList[0].img"/>
+                <p>{{movie.title}}</p>
+            </div>
+            <transition name="roll">
+                <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
+                    <p>Director: ??</p>
+                    <p>Rating: {{movie.rating}}</p>
+                    <p>Budget: {{movie.Budget}}</p>
+                    <p>Production Country: {{movie.Country}}</p>
+                    <p>Genres: {{movie.genres}}</p>
+                    <p><a v-bind:href="'https://www.imdb.com/title/' + movie.link" target="_blank"> {{movie.title}} </a> </p>
+
+                </div>
+            </transition>
+        </div>
+    </div>
+
+</div>
+<script src="searchScript.js"></script>
+</body>
+</html>
