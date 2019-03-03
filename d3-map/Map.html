@@ -1,32 +1,22 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
+
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 960px;
-  height: 500px;
-  position: relative;
+  font: 18px sans-serif;
 }
-#canvas {
-}
-#canvas-svg {
-}
-.land {
-  fill: #222;
-}
-.boundary {
-  fill: none;
-  stroke: #fff;
+
+path {
   stroke-width: 1px;
+  stroke: white;
+  fill: steelblue;
+  cursor: pointer;
 }
-#tooltip-container {
-  position: absolute;
-  background-color: #fff;
-  color: #000;
-  padding: 10px;
-  border: 1px solid;
-  display: none;
+
+path:hover, path.highlighted {
+  fill: tomato;
 }
+
 .tooltip_key {
   font-weight: bold;
 }
@@ -35,267 +25,227 @@ body {
   float: right;
 }
 
-.country.active {
-  fill: rgb(255, 190, 153);
+div.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  padding: 4px 8px;
+  display: none;
 }
 
 </style>
-
-<div id="tooltip-container"></div>
-
-<div id="canvas-svg"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
-var active;
-var last;
+//Map dimensions (in pixels)
+var width = 900,
+    height = 500;
 
-d3.csv("population.csv", function(err, data) {
+//Map projection
+var projection = d3.geoRobinson()
+    .scale(137.67011618797827)
+    .center([-0.0018057527730242487,11.258678472759552]) //projection center
+    .translate([width/2,height/2]) //translate to center the map in view
 
-  // Initialize labels and the colors to range between
-  var config = {"data0":"Country (or dependent territory)","data1":"Population",
-              "label0":"label 0","label1":"label 1","color0":"#99ccff","color1":"#0050A1",
-              "width":960,"height":960,"centered":null}
+//Generate paths based on projection
+var path = d3.geo.path()
+    .projection(projection);
 
-  var width = config.width,
-      height = config.height,
-      centered = config.centered;
+//Create an SVG
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-  // Amount of colors on the map
-  var COLOR_COUNTS = 9;
+//Group for the map features
+var features = svg.append("g")
+    .attr("class","features");
 
-  // Interpolation function for the colors between "min" and "max" colors
-  function Interpolate(start, end, steps, count) {
-      var s = start,
-          e = end,
-          final = s + (((e - s) / steps) * count);
-      return Math.floor(final);
-  }
+//Create a tooltip, hidden at the start
+var tooltip = d3.select("body").append("div").attr("class","tooltip");
 
-  function Color(_r, _g, _b) {
-      var r, g, b;
-      var setColors = function(_r, _g, _b) {
-          r = _r;
-          g = _g;
-          b = _b;
-      };
+//Keeps track of currently zoomed feature
+var centered;
 
-      setColors(_r, _g, _b);
-      this.getColors = function() {
-          var colors = {
-              r: r,
-              g: g,
-              b: b
-          };
-          return colors;
-      };
-  }
+// from colorbrewer (http://colorbrewer2.org/)
+var colours = ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"];
 
-  function hexToRgb(hex) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-      } : null;
-  }
+// setup colours for choropleth
+var colScale = d3.scale.quantize()
+                  .range(colours);
 
-  // Rounding function for pop. values
-  function valueFormat(d) {
-    if (d > 1000000000) {
-      return Math.round(d / 1000000000 * 10) / 10 + "B";
-    } else if (d > 1000000) {
-      return Math.round(d / 1000000 * 10) / 10 + "M";
-    } else if (d > 1000) {
-      return Math.round(d / 1000 * 10) / 10 + "K";
-    } else {
-      return d;
-    }
-  }
+// list for movie revenues, these values are used to color countries
+var revenuelist = {};
 
-  var COLOR_FIRST = config.color0, COLOR_LAST = config.color1;
+// file for movie data
+var moviefile;
 
-  var rgb = hexToRgb(COLOR_FIRST);
-
-  var COLOR_START = new Color(rgb.r, rgb.g, rgb.b);
-
-  rgb = hexToRgb(COLOR_LAST);
-  var COLOR_END = new Color(rgb.r, rgb.g, rgb.b);
-
-  var startColors = COLOR_START.getColors(),
-      endColors = COLOR_END.getColors();
-
-  var colors = [];
-
-  for (var i = 0; i < COLOR_COUNTS; i++) {
-    var r = Interpolate(startColors.r, endColors.r, COLOR_COUNTS, i);
-    var g = Interpolate(startColors.g, endColors.g, COLOR_COUNTS, i);
-    var b = Interpolate(startColors.b, endColors.b, COLOR_COUNTS, i);
-    colors.push(new Color(r, g, b));
-  }
-
-  var MAP_KEY = config.data0;
-  var MAP_VALUE = config.data1;
-
-  var projection = d3.geo.mercator()
-      .scale((width + 1) / 2 / Math.PI)
-      .translate([width / 2, height / 2])
-      .precision(.1);
-
-  var path = d3.geo.path()
-      .projection(projection);
-
-  var graticule = d3.geo.graticule();
-
-  var svg = d3.select("#canvas-svg").append("svg")
-      .attr("width", width)
-      .attr("height", height);
-
-  svg.append("path")
-      .datum(graticule)
-      .attr("class", "graticule")
-      .attr("d", path);
-
-  var g = svg.append("g");
-
-  var valueHash = {};
-
-  function log10(val) {
-    return Math.log(val);
-  }
-
-  data.forEach(function(d) {
-    valueHash[d[MAP_KEY]] = +d[MAP_VALUE];
-  });
-
-  var quantize = d3.scale.quantize()
-      .domain([0, 1.0])
-      .range(d3.range(COLOR_COUNTS).map(function(i) { return i }));
-
-  quantize.domain([d3.min(data, function(d){
-      return (+d[MAP_VALUE]) }),
-    d3.max(data, function(d){
-      return (+d[MAP_VALUE]) })]);
-
-  // Main map function
-  d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/world-topo-min.json", function(error, world) {
-    var countries = topojson.feature(world, world.objects.countries).features;
-
-    svg.append("path")
-       .datum(graticule)
-       .attr("class", "choropleth")
-       .attr("d", path);
-
-    g = svg.append("g");
-
-
-    g.attr("id", "countries")
-     .append("path")
-     .datum({type: "LineString", coordinates: [[-180, 0], [-90, 0], [0, 0], [90, 0], [180, 0]]})
-     .attr("class", "equator")
-     .attr("d", path);
-
-    var country = g.selectAll(".country").data(countries);
-
-    country.enter().insert("path")
-        .attr("class", "country")
-        .attr("d", path)
-        .attr("id", function(d,i) { return d.id; })
-        .attr("title", function(d) { return d.properties.name; })
-        .attr("fill", function(d) {
-          if (valueHash[d.properties.name]) { // If the country has a value for pop
-            var c = quantize((valueHash[d.properties.name])); // Valuehash is an array?
-            var color = colors[c].getColors();    // Get the colors from our 9 colors
-            return "rgb(" + color.r + "," + color.g +
-                "," + color.b + ")";
-          } else {
-            return "#ccc";
-          }
-        })
-        .attr("original-fill", "#ccc")
-        .on("mousemove", function(d) {
-          if (centered !== d) {
-            var html = "";
-
-            html += "<div class=\"tooltip_kv\">";
-            html += "<span class=\"tooltip_key\">";
-            html += d.properties.name;
-            html += "</span>";
-            html += "<span class=\"tooltip_value\">";
-            html += (valueHash[d.properties.name] ? valueFormat(valueHash[d.properties.name]) : "");
-            html += "";
-            html += "</span>";
-            html += "</div>";
-
-            $("#tooltip-container").html(html);
-            $(this).attr("fill-opacity", "0.8");
-            $("#tooltip-container").show();
-
-            var coordinates = d3.mouse(this);
-
-            var map_width = $('.choropleth')[0].getBoundingClientRect().width;
-
-            if (d3.event.pageX < map_width / 2) {
-              d3.select("#tooltip-container")
-                .style("top", (d3.event.layerY + 15) + "px")
-                .style("left", (d3.event.layerX + 15) + "px");
-            } else {
-              var tooltip_width = $("#tooltip-container").width();
-              d3.select("#tooltip-container")
-                .style("top", (d3.event.layerY + 15) + "px")
-                .style("left", (d3.event.layerX - tooltip_width - 30) + "px");
-            }
-          }
-        })
-        .on("mouseout", function() {
-                $(this).attr("fill-opacity", "1.0");
-                $("#tooltip-container").hide();
-        })
-        .on("click", function (d) {
-
-            if (d && centered !== d) {
-              centered = d;
-              //$(this).attr("original-fill", $(this).attr("style"));
-              //$(this).attr("style", "fill: rgb(255, 190, 153)");
-              //last = this;
-
-              g.selectAll("path")
-                  .classed("active", centered && function(d) {
-                    return d === centered;
-                  });
-              console.log(this);
-
-              //last = this;
-
-              var b = path.bounds(d);
-
-              g.transition().duration(1500).attr("transform",
-                  "translate(" + projection.translate() + ")"
-                  + "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
-                  + "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
-            } else {
-              centered = null;
-              //$(this).attr("style", $(this).attr("original-fill"));
-              g.selectAll("path").classed("active", active = false);
-              g.transition().duration(1500).attr("transform", "");
-            }
-
-         });
-
-    g.append("path")
-        .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
-        .attr("class", "boundary")
-        .attr("d", path);
-
-  });
-
-  d3.select(self.frameElement).style("height", (height * 2.3 / 3) + "px");
-
-
+// read in movie data
+$.getJSON("movies.json", function (data) {
+    moviefile = data;
 });
 
+//read in initial data TODO: swap to accumulated revenue
+d3.csv("population.csv", function(movies) {
+  d3.json("countries.geojson", function(geodata) {
+
+    // take out each countries value
+    movies.forEach(function(d) {
+      revenuelist[d["Country"]] = +d["Population"];
+    });
+
+    var min = d3.min(Object.values(revenuelist))
+    var max = d3.max(Object.values(revenuelist))
+
+    // set domain for colors
+    colScale.domain([min,max]);
+
+    //Create a path for each map feature in the data
+    features.selectAll("path")
+      .data(geodata.features) //generate features from TopoJSON
+      .enter()
+      .append("path")
+      .attr("d",path)
+      .attr("id", function(d,i) { return d.properties.name; })
+      .attr("class", "country")
+      .on("mouseover",showTooltip)
+      .on("mousemove",moveTooltip)
+      .on("mouseout",hideTooltip)
+      .on("click",clicked)
+      .style("fill", function (d,i) {
+        return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc"); });;
+  });
+});
+
+// function takes a movie id as input and repaints the map
+function loadMovieData(movieid){
+
+  // load the new data
+  var movie = moviefile;
+  var selectedmovierevenue = movie[movieid]["Country Total Gross"];
+
+  var countryarray = Object.entries(selectedmovierevenue);
+
+  // placeholder revenue
+  var newrevenuelist = {};
+
+  countryarray.forEach(function(d) {
+    var value = d[1].replace(/[^0-9\.]+/g, '');
+    value = Number(value);
+    newrevenuelist[d[0]] = +value;
+  });
+
+  var usarevenue = movie[movieid]["Domestic Total Gross"];
+  usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
+
+  // separate addition for USA
+  newrevenuelist["USA"] = +usarevenue;
+
+  // update revenue list
+  revenuelist = newrevenuelist;
+
+  var min = d3.min(Object.values(revenuelist))
+  var max = d3.max(Object.values(revenuelist))
+
+  // set the domain for the colors
+  colScale.domain([min,max]);
+
+  // repaint the countries
+  features.selectAll("path")
+    .style("fill", function (d,i) {
+      return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc");
+    });;
+}
+
+// Rounding function for values
+function valueFormat(d) {
+  if (d > 1000000000) {
+    return Math.round(d / 1000000000 * 10) / 10 + "B $";
+  } else if (d > 1000000) {
+    return Math.round(d / 1000000 * 10) / 10 + "M $";
+  } else if (d > 1000) {
+    return Math.round(d / 1000 * 10) / 10 + "K $";
+  } else {
+    return d;
+  }
+}
+
+// Zoom to feature on click
+function clicked(d,i) {
+
+  //Add any other onClick events here
+
+  var x, y, k;
+
+  if (d && centered !== d) {
+    // Compute the new map center and scale to zoom to
+    var centroid = path.centroid(d);
+    var b = path.bounds(d);
+    x = centroid[0];
+    y = centroid[1];
+    k = .8 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+    centered = d
+  } else {
+    x = width / 2;
+    y = height / 2;
+    k = 1;
+    centered = null;
+  }
+
+  // Highlight the new feature
+  features.selectAll("path")
+      .classed("highlighted",function(d) {
+          return d === centered;
+      })
+      //.style("stroke-width", 1 / k + "px"); // Keep the border width constant
+
+  //Zoom and re-center the map
+  //Uncomment .transition() and .duration() to make zoom gradual
+  features.transition()
+      .duration(1000)
+      .attr("transform","translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
+}
+
+//Position of the tooltip relative to the cursor
+var tooltipOffset = {x: 5, y: -25};
+
+//Create a tooltip, hidden at the start
+function showTooltip(d) {
+  moveTooltip();
+
+    // add additional values to tooltip here, if wanted
+    var html = "";
+
+    html += "<div class=\"tooltip_kv\">";
+    html += "<span class=\"tooltip_key\">";
+    html += d.properties.name;    // adds the name of the country to tooltip
+    html += "</span>";
+    html += "<span class=\"tooltip_value\">";
+    html += (revenuelist[d.properties.name] ? valueFormat(revenuelist[d.properties.name]) : "No data");     // adds the data if it exists
+    html += "";
+    html += "</span>";
+    html += "</div>";
+
+    tooltip.style("display","block").html(html);
+}
+
+//Move the tooltip to track the mouse
+function moveTooltip() {
+  tooltip.style("top",(d3.event.pageY+tooltipOffset.y)+"px")
+      .style("left",(d3.event.pageX+tooltipOffset.x)+"px");
+}
+
+//Create a tooltip, hidden at the start
+function hideTooltip() {
+  tooltip.style("display","none");
+}
 </script>
+
+<!--<button type="button" value="catchingfire" onclick="loadMovieData('catchingfire')">catchingfire</button>-->
+<!--<button type="button" value="frozen2013" onclick="loadMovieData('frozen2013')">frozen2013</button>-->
