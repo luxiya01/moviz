@@ -4,6 +4,7 @@
 </template>
 
 <script>
+import {event as currentEvent} from 'd3';
 const d3 = {
     ...require('d3'),
     ...require('d3-geo'),
@@ -213,14 +214,16 @@ export default {
 
     //Move the tooltip to track the mouse
     function moveTooltip() {
-      tooltip.style("top",(d3.event.pageY+tooltipOffset.y)+"px")
-          .style("left",(d3.event.pageX+tooltipOffset.x)+"px");
+      tooltip.style("top",(currentEvent.pageY+tooltipOffset.y)+"px")
+          .style("left",(currentEvent.pageX+tooltipOffset.x)+"px");
     }
 
     //Create a tooltip, hidden at the start
     function hideTooltip() {
       tooltip.style("display","none");
     }
+
+
 
   }
 }
