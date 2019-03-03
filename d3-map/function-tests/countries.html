@@ -41,6 +41,7 @@ div.tooltip {
 <script src="https://d3js.org/d3-array.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 
 //Map dimensions (in pixels)
@@ -76,12 +77,21 @@ var centered;
 var colours = ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"];
 
 // setup colours for choropleth
-var colScale = d3.scale.quantize() // TODO: switch to quantile
+var colScale = d3.scale.quantize()
                   .range(colours);
 
+// list for movie revenues, these values are used to color countries
 var revenuelist = {};
 
-//read in initial data
+// file for movie data
+var moviefile;
+
+// read in movie data
+$.getJSON("movies.json", function (data) {
+    moviefile = data;
+});
+
+//read in initial data TODO: swap to accumulated revenue
 d3.csv("population.csv", function(movies) {
   d3.json("countries.geojson", function(geodata) {
 
@@ -93,10 +103,8 @@ d3.csv("population.csv", function(movies) {
     var min = d3.min(Object.values(revenuelist))
     var max = d3.max(Object.values(revenuelist))
 
-    // add extents (max and min) from data results for choropleth
+    // set domain for colors
     colScale.domain([min,max]);
-
-    console.log([min,max])
 
     //Create a path for each map feature in the data
     features.selectAll("path")
@@ -115,41 +123,44 @@ d3.csv("population.csv", function(movies) {
   });
 });
 
+// function takes a movie id as input and repaints the map
 function loadMovieData(movieid){
 
   // load the new data
-  d3.json("movies.json", function(movie){
-    var selectedmovierevenue = movie[movieid]["Country Total Gross"];
+  var movie = moviefile;
+  var selectedmovierevenue = movie[movieid]["Country Total Gross"];
 
-    var countryarray = Object.entries(selectedmovierevenue);
+  var countryarray = Object.entries(selectedmovierevenue);
 
-    var newrevenuelist = {};
+  // placeholder revenue
+  var newrevenuelist = {};
 
-    countryarray.forEach(function(d) {
-      var value = d[1].replace(/[^0-9\.]+/g, '');
-      value = Number(value);
-      newrevenuelist[d[0]] = +value;
-    });
-
-    var usarevenue = movie[movieid]["Domestic Total Gross"];
-    usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
-
-    newrevenuelist["USA"] = +usarevenue;
-
-    console.log(newrevenuelist);
-
-    revenuelist = newrevenuelist;
-
-    var min = d3.min(Object.values(revenuelist))
-    var max = d3.max(Object.values(revenuelist))
-
-    // add extents (max and min) from data results for choropleth
-    colScale.domain([min,max]);
-
-    features.selectAll("path")
-      .style("fill", function (d,i) {
-        return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc"); });;
+  countryarray.forEach(function(d) {
+    var value = d[1].replace(/[^0-9\.]+/g, '');
+    value = Number(value);
+    newrevenuelist[d[0]] = +value;
   });
+
+  var usarevenue = movie[movieid]["Domestic Total Gross"];
+  usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
+
+  // separate addition for USA
+  newrevenuelist["USA"] = +usarevenue;
+
+  // update revenue list
+  revenuelist = newrevenuelist;
+
+  var min = d3.min(Object.values(revenuelist))
+  var max = d3.max(Object.values(revenuelist))
+
+  // set the domain for the colors
+  colScale.domain([min,max]);
+
+  // repaint the countries
+  features.selectAll("path")
+    .style("fill", function (d,i) {
+      return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc");
+    });;
 }
 
 // Rounding function for values
