@@ -22,8 +22,8 @@
         </div>
         <Map v-bind:filename="filename"/>
       </div>
-      <div class="col-sm-4" style="background-color:grey">
-        <Test msg="this sends to test.vue"/>
+      <div class="col-sm-4">
+        <Searchbar v-bind:movieList="movieList"/>
       </div>
     </div>
   </div>
@@ -33,12 +33,14 @@
 import Test from '@/components/Test.vue'
 import Button from '@/components/Button.vue'
 import Map from '@/components/Map.vue'
+import Searchbar from '@/components/Searchbar.vue'
 import * as d3 from 'd3';
+import movieList from '../../../search_bar/first_600_movies.json';
 
 export default {
   name: 'HelloWorld',
     components: {
-    Test, Button, Map
+    Test, Button, Map, Searchbar
   },
   props: {
     msg: String
@@ -46,7 +48,8 @@ export default {
   data() {
       return {
           datatype: 'revenue',
-          scale: 'total'
+          scale: 'total',
+          movieList: Object.values(movieList)
       }
   },
   computed: {
