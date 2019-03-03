@@ -38,7 +38,7 @@ class Movie {
 export default {
     name: 'Searchbar',
     props: {
-        movieList : []
+        movieList : Array
     },
     data() {
         return {
@@ -149,7 +149,6 @@ export default {
     computed: {
         filteredList() {
             return this.movieList.filter(post => {
-                console.log(post);
                 return post.title.toLowerCase().includes(this.search.toLowerCase());
             }).sort(this.compare) // <-- added sorting!
         }

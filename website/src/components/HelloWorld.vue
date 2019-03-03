@@ -2,7 +2,6 @@
   <div class="hello">
     <div class="row">
       <div class="col-sm-8" style="background-color: beige">
-        <h1>{{ movie }}</h1>
         <div class="row">
             <div class="col-sm-8">
                 <Button 
@@ -20,28 +19,27 @@
                     v-on:selection-change="scale=$event"/>
             </div>
         </div>
-        <Map v-bind:filename="filename"/>
+        <Map v-bind:moviefile="movieJSON" v-bind:movieid="movieid"/>
       </div>
       <div class="col-sm-4">
         <Searchbar v-bind:movieList="movieList"
-        v-on:movie-selection="movie=$event"/>
+        v-on:movie-selection="movieid=$event"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Test from '@/components/Test.vue'
 import Button from '@/components/Button.vue'
 import Map from '@/components/Map.vue'
 import Searchbar from '@/components/Searchbar.vue'
+import movieJSON from '../../../database/merged_readable.json';
 import * as d3 from 'd3';
-import movieList from '../../../search_bar/first_600_movies.json';
 
 export default {
   name: 'HelloWorld',
     components: {
-    Test, Button, Map, Searchbar
+    Button, Map, Searchbar
   },
   props: {
     msg: String
@@ -50,8 +48,9 @@ export default {
       return {
           datatype: 'revenue',
           scale: 'total',
-          movie: '',
-          movieList: Object.values(movieList)
+          movieid: '',
+          movieJSON: movieJSON,
+          movieList: Object.values(movieJSON)
       }
   },
   computed: {
