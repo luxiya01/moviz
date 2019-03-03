@@ -2,7 +2,7 @@
   <div class="hello">
     <div class="row">
       <div class="col-sm-8" style="background-color: beige">
-        <h1>{{ msg }}</h1>
+        <h1>{{ movie }}</h1>
         <div class="row">
             <div class="col-sm-8">
                 <Button 
@@ -23,7 +23,8 @@
         <Map v-bind:filename="filename"/>
       </div>
       <div class="col-sm-4">
-        <Searchbar v-bind:movieList="movieList"/>
+        <Searchbar v-bind:movieList="movieList"
+        v-on:movie-selection="movie=$event"/>
       </div>
     </div>
   </div>
@@ -49,6 +50,7 @@ export default {
       return {
           datatype: 'revenue',
           scale: 'total',
+          movie: '',
           movieList: Object.values(movieList)
       }
   },

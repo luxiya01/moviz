@@ -18,7 +18,6 @@
                     <p>Production Country: {{movie.Country}}</p>
                     <p>Genres: {{movie.genres}}</p>
                     <p><a v-bind:href="'https://www.imdb.com/title/' + movie.link" target="_blank"> {{movie.title}} </a> </p>
-
                 </div>
             </transition>
         </div>
@@ -137,6 +136,7 @@ export default {
                 this.selectedMovieName = "";
                 this.search = "";
             }
+            this.$emit('movie-selection', movie.id);
         },
         hasSearchBarChanged() {
 
