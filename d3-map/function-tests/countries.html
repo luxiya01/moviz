@@ -76,28 +76,27 @@ var centered;
 var colours = ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"];
 
 // setup colours for choropleth
-var colScale = d3.scale.ordinal()
+var colScale = d3.scale.quantize() // TODO: switch to quantile
                   .range(colours);
+
+var revenuelist = {};
 
 //read in initial data
 d3.csv("population.csv", function(movies) {
   d3.json("countries.geojson", function(geodata) {
 
-    // join csv data with json data and create
-    geodata.features.forEach(function (d,i) {
-      movies.forEach(function (e,j) {
-        if (d.properties.name === e.Country) {
-          if(+e.Population) {
-            d.properties.revenue = +e.Population;
-            d.properties.roundedrevenue = valueFormat(+e.Population);
-          }
-        };
-      })
-    })
+    // take out each countries value
+    movies.forEach(function(d) {
+      revenuelist[d["Country"]] = +d["Population"];
+    });
+
+    var min = d3.min(Object.values(revenuelist))
+    var max = d3.max(Object.values(revenuelist))
 
     // add extents (max and min) from data results for choropleth
-      colScale.domain(d3.extent(movies, function (d) { return d.Population } ));
-      console.log(d3.extent(movies, function (d) { return d.Population } ) )
+    colScale.domain([min,max]);
+
+    console.log([min,max])
 
     //Create a path for each map feature in the data
     features.selectAll("path")
@@ -107,20 +106,50 @@ d3.csv("population.csv", function(movies) {
       .attr("d",path)
       .attr("id", function(d,i) { return d.properties.name; })
       .attr("class", "country")
-      .attr("revenue", function(d) { return d.properties.roundedrevenue; })
       .on("mouseover",showTooltip)
       .on("mousemove",moveTooltip)
       .on("mouseout",hideTooltip)
       .on("click",clicked)
-      .style("fill", function (d,i) { return (d.properties.revenue ? colScale(d.properties.revenue) : "#ccc"); });;
+      .style("fill", function (d,i) {
+        return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc"); });;
   });
 });
 
-function loadMovieData(movie){
-  var data = d3.json("movies.json");
-  features.selectAll("path")
-      .enter()
-      .append()
+function loadMovieData(movieid){
+
+  // load the new data
+  d3.json("movies.json", function(movie){
+    var selectedmovierevenue = movie[movieid]["Country Total Gross"];
+
+    var countryarray = Object.entries(selectedmovierevenue);
+
+    var newrevenuelist = {};
+
+    countryarray.forEach(function(d) {
+      var value = d[1].replace(/[^0-9\.]+/g, '');
+      value = Number(value);
+      newrevenuelist[d[0]] = +value;
+    });
+
+    var usarevenue = movie[movieid]["Domestic Total Gross"];
+    usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
+
+    newrevenuelist["USA"] = +usarevenue;
+
+    console.log(newrevenuelist);
+
+    revenuelist = newrevenuelist;
+
+    var min = d3.min(Object.values(revenuelist))
+    var max = d3.max(Object.values(revenuelist))
+
+    // add extents (max and min) from data results for choropleth
+    colScale.domain([min,max]);
+
+    features.selectAll("path")
+      .style("fill", function (d,i) {
+        return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc"); });;
+  });
 }
 
 // Rounding function for values
@@ -167,9 +196,8 @@ function clicked(d,i) {
 
   //Zoom and re-center the map
   //Uncomment .transition() and .duration() to make zoom gradual
-  features
-      .transition()
-      .duration(500)
+  features.transition()
+      .duration(1000)
       .attr("transform","translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 }
 
@@ -185,10 +213,10 @@ function showTooltip(d) {
 
     html += "<div class=\"tooltip_kv\">";
     html += "<span class=\"tooltip_key\">";
-    html += d.properties.name;
+    html += d.properties.name;    // adds the name of the country to tooltip
     html += "</span>";
     html += "<span class=\"tooltip_value\">";
-    html += (d.properties.roundedrevenue ? d.properties.roundedrevenue : "");
+    html += (revenuelist[d.properties.name] ? valueFormat(revenuelist[d.properties.name]) : "No data");     // adds the data if it exists
     html += "";
     html += "</span>";
     html += "</div>";
@@ -207,3 +235,6 @@ function hideTooltip() {
   tooltip.style("display","none");
 }
 </script>
+
+<button type="button" value="catchingfire" onclick="loadMovieData('catchingfire')">catchingfire</button>
+<button type="button" value="frozen2013" onclick="loadMovieData('frozen2013')">frozen2013</button>
