@@ -24,13 +24,14 @@
     </div>
 
     <div class="wrapper">
-        <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)">
+        <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)" v-bind:key="movie.id">
             <div class="topCard">
                 <img v-bind:src="getImage(movie)"/>
-                <p>{{movie.title}}<br/>
+                <p>
+                    <b>{{movie.title}}</b>
+                    <br/>
                     {{movie.rating}}<br/>
-                    {{movie['Foreign Total Gross']}}<br/>
-                    {{movie['Domestic Total Gross']}}</p>
+                </p>
             </div>
             <!-- ><transition name="roll"><-->
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
@@ -226,8 +227,9 @@ div#searchbar .search-wrapper {
 
 div#searchbar .search-wrapper input {
     padding: 4px 12px;
+    width: 20em;
     color: rgba(0, 0, 0, .70);
-    border: 1px solid rgba(0, 0, 0, .12);
+    /*border: 1px solid rgba(0, 0, 0, .12);*/
     transition: 0.15s all ease-in-out;
     background: white;
 }
@@ -247,8 +249,8 @@ div#searchbar .search-wrapper input::-webkit-input-placeholder {
 
 div#searchbar .wrapper {
     display: block;
-    width: 390px;
-    height: 570px;
+    width: 25em;
+    height: 70vh;
     overflow: auto;
     margin-top:12px;
     padding-top: 0;
@@ -263,25 +265,35 @@ div#searchbar .card {
     margin-bottom: 12px;
     transition: 0.15s all ease-in-out;
     text-align: left;
+    color: black;
+    border: none
 }
 div#searchbar .card:hover {
-    /*transform: scale(1.1);*/
-    background-color: #d8ffe8;
+    /*transform: scale(1.1);
+    background-color: #fff0f2;*/
+      filter: brightness(85%);
 }
 div#searchbar .card .topCard{
     text-decoration: none;
     /*padding: 12px;*/
-    color: #03a9f4;
-    font-size: 20px;
+    color: white;
+    font-size: 1em;
     /*display: flex;*/
     flex-direction: column;
     align-items: center;
-    height: 150px;
+    height: 6em;
     cursor: pointer;
+    background-color: gray
+    
 }
 
-div#searchbar .card .topCard p{
-    margin: 0;
+.topCard p{
+    position: absolute;
+    float: left;
+    margin: .5em 0 0 5em;
+}
+.topCard p::first-letter{
+    text-transform: uppercase;
 }
 
 
