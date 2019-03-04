@@ -74,21 +74,24 @@ export default {
       }
   },
   watch: {
-      movieid: function() {
+      movieid: function(val, preVal) {
           this.updateMap();
       },
-      mode: function() {
-          this.updateMap();
+      mode: function(val, preVal) {
+          this.updateMap(val, preVal);
       },
-      scale: function() {
+      scale: function(val, preVal) {
           this.updateMap();
       }
   },
   methods: {
-    updateMap: function() {
+    updateMap: function(val, preVal) {
         if (this.mode == 'imdb-rating') {
             this.loadIMDBRating();
-        } else {
+        } else if (val == 'revenue' && preVal == 'imdb-rating'){
+            this.loadTotalRevenue();
+        }
+        else{
             this.loadMovieData();
         }
     },
@@ -119,7 +122,6 @@ export default {
       newrevenuelist["USA"] = +usarevenue;
 
       var currentComponent = this;
-      console.log(newrevenuelist);
 
       if (this.scale == 'per-capita') {
           countryarray = Object.entries(newrevenuelist);
@@ -147,7 +149,6 @@ export default {
               return (data[d.properties.name] ?
                   currentComponent.colScale(data[d.properties.name]) : "#ccc");
             });
-          console.log(currentComponent.colScale.domain());
       },
     // Zoom to feature on click
     clicked: function(d,i) {
@@ -228,44 +229,52 @@ export default {
       } else {
         return d;
       }
-    }
+    },
+    loadTotalRevenue: function() {
+
+        var currentComponent = this;
+        var tempList = {};
+
+        //read in initial data TODO: swap to accumulated revenue
+        d3.json("country.json", function(movies) {
+          movies = Object.entries(movies);
+          d3.json("countries.geojson", function(geodata) {
+
+            // take out each countries value
+            movies.forEach(function(d) {
+              var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
+              value = Number(value);
+              tempList[d[0]] = +value;
+            });
+            currentComponent.revenuelist = tempList;
+
+            var min = d3.min(Object.values(currentComponent.revenuelist))
+            var max = d3.max(Object.values(currentComponent.revenuelist))
+
+            // set domain for colors
+            currentComponent.colScale.domain([min,max]);
+
+            //Create a path for each map feature in the data
+            currentComponent.features.selectAll("path")
+              .data(geodata.features) //generate features from TopoJSON
+              .enter()
+              .append("path")
+              .attr("d",currentComponent.path)
+              .attr("id", function(d,i) { return d.properties.name; })
+              .attr("class", "country")
+              .on("mouseover",currentComponent.showTooltip)
+              .on("mousemove",currentComponent.moveTooltip)
+              .on("mouseout",currentComponent.hideTooltip)
+              .on("click",currentComponent.clicked)
+              .style("fill", function (d,i) {
+                return (currentComponent.revenuelist[d.properties.name] ?
+                    currentComponent.colScale(currentComponent.revenuelist[d.properties.name]) : "#ccc"); });;
+          });
+        });
+  },
   },
   mounted() {
-
-    var currentComponent = this;
-
-    //read in initial data TODO: swap to accumulated revenue
-    d3.csv("population.csv", function(movies) {
-      d3.json("countries.geojson", function(geodata) {
-
-        // take out each countries value
-        movies.forEach(function(d) {
-          currentComponent.revenuelist[d["Country"]] = +d["Population"];
-        });
-
-        var min = d3.min(Object.values(currentComponent.revenuelist))
-        var max = d3.max(Object.values(currentComponent.revenuelist))
-
-        // set domain for colors
-        currentComponent.colScale.domain([min,max]);
-
-        //Create a path for each map feature in the data
-        currentComponent.features.selectAll("path")
-          .data(geodata.features) //generate features from TopoJSON
-          .enter()
-          .append("path")
-          .attr("d",currentComponent.path)
-          .attr("id", function(d,i) { return d.properties.name; })
-          .attr("class", "country")
-          .on("mouseover",currentComponent.showTooltip)
-          .on("mousemove",currentComponent.moveTooltip)
-          .on("mouseout",currentComponent.hideTooltip)
-          .on("click",currentComponent.clicked)
-          .style("fill", function (d,i) {
-            return (currentComponent.revenuelist[d.properties.name] ?
-                currentComponent.colScale(currentComponent.revenuelist[d.properties.name]) : "#ccc"); });;
-      });
-    });
+      this.loadTotalRevenue();
   }
 }
 </script>
