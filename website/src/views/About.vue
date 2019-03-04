@@ -358,7 +358,7 @@ a button {
   margin-bottom: 1em;
 }
 .rodrigo{
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/alvaro.jpg?alt=media&token=368ca031-c968-49d9-a965-a0f747f3bad7");
+  background-image: url("https://vignette.wikia.nocookie.net/despicableme/images/9/9d/2287ebaafa4e3db2604c72ba43b4a3c9.jpg/revision/latest?cb=20160904072257");
   background-size: cover;  
 }
 .alvaro{
