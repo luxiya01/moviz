@@ -119,6 +119,7 @@ export default {
       newrevenuelist["USA"] = +usarevenue;
 
       var currentComponent = this;
+      console.log(newrevenuelist);
 
       if (this.scale == 'per-capita') {
           countryarray = Object.entries(newrevenuelist);
@@ -132,6 +133,7 @@ export default {
       
     },
       updateMapHelper: function(data) {
+          this.revenuelist = data;
           var min = d3.min(Object.values(data))
           var max = d3.max(Object.values(data))
 
@@ -221,6 +223,8 @@ export default {
         return Math.round(d / 1000000 * 10) / 10 + "M $";
       } else if (d > 1000) {
         return Math.round(d / 1000 * 10) / 10 + "K $";
+      } else if (d < 1) {
+        return d.toFixed(2) + " $";
       } else {
         return d;
       }
