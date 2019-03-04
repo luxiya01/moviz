@@ -1,4 +1,5 @@
 <template>
+
 <div id="searchbar">
     <div class="search-wrapper">
         <input type="text" v-model="search" placeholder="Search movie title.." v-on:keydown="hasSearchBarChanged"/>
@@ -30,17 +31,19 @@
                 <p>
                     <b>{{movie.title}}</b>
                     <br/>
-                    {{movie.rating}}<br/>
+                      <svg v-if="movie.rating" class="stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path id="starPath" d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                     {{movie.rating}}<br/>
                 </p>
             </div>
             <!-- ><transition name="roll"><-->
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
-                    <p>Director: ??</p>
-                    <p>Rating: {{movie.rating}}</p>
-                    <p>Budget: {{movie.Budget}}</p>
-                    <p>Production Country: {{movie.Country}}</p>
-                    <p>Genres: {{movie.genres}}</p>
-                    <p><a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> </p>
+                    <p >
+                    <b>Rating</b>: {{movie.rating}}<br/>
+                    <b>Budget</b>: {{movie.Budget}}<br/>
+                    <b>Production Country</b>: <span v-for="country in movie.Country" v-bind:key="country"> {{country+", "}}</span><br/>
+                    <b>Genres</b>: <span v-for="genres in movie.genres" v-bind:key="genres"> {{genres+", "}}</span> <br/>
+                    <a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> 
+                </p>
 
                 </div>
             <!-- ></transition><-->
@@ -212,6 +215,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.stars{
+    height: 1em;
+    margin-top: -.4em;
+    fill:gold
+}
+#starPath{
+    stroke: none;
+    fill:gold
+
+}
 body {
     font-family: Verdana, Arial, "sans-serif";
 }
@@ -249,6 +262,7 @@ div#searchbar .search-wrapper input::-webkit-input-placeholder {
 
 div#searchbar .wrapper {
     display: block;
+    
     width: 25em;
     height: 70vh;
     overflow: auto;
@@ -262,6 +276,7 @@ div#searchbar .wrapper {
 div#searchbar .card {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     /*max-width: 124px;*/
+    
     margin-bottom: 12px;
     transition: 0.15s all ease-in-out;
     text-align: left;
@@ -275,6 +290,7 @@ div#searchbar .card:hover {
 }
 div#searchbar .card .topCard{
     text-decoration: none;
+    
     /*padding: 12px;*/
     color: white;
     font-size: 1em;
@@ -303,7 +319,7 @@ div#searchbar .card img {
 }
 
 div #searchbar .card .bottomCard {
-
+    margin: 1em;
 }
 
 .roll-enter-active, .roll-leave-active {

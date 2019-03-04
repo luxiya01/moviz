@@ -330,7 +330,7 @@
 
 
 
-<style>
+<style >
 .modalView {
   color: black
 }
