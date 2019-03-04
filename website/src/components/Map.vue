@@ -258,7 +258,7 @@ path:hover, path.highlighted {
 
 div.tooltip {
   position: absolute;
-  background-color: black !important;
+  background-color: black;
   border: 1px solid black;
   color: white !important;
   padding: 4px 8px;
