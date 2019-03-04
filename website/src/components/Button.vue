@@ -29,3 +29,13 @@ export default {
     }
 }
 </script>
+
+<style>
+
+:focus {
+  transform: scale(0.95);
+
+}
+
+</style>
+

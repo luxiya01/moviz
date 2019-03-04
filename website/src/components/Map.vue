@@ -35,7 +35,7 @@ export default {
         //Keeps track of currently zoomed feature
         centered : null,
         //Position of the tooltip relative to the cursor
-        tooltipOffset : {x: 5, y: -25},
+        tooltipOffset : {x: 20, y: -160},
         // list for movie revenues, these values are used to color countries
         revenuelist : {},
     }
@@ -61,8 +61,10 @@ export default {
     //Create an SVG
       svg (){
        return d3.select(".map").append("svg")
+            .attr("class", "worldMap")
             .attr("width", this.width)
-            .attr("height", this.height);
+            .attr("height", this.height)
+            .style("z-index", "-10")
       },
 
     //Group for the map features
@@ -290,10 +292,11 @@ path:hover, path.highlighted {
 
 div.tooltip {
   position: absolute;
-  background-color: white;
+  background-color: black;
   border: 1px solid black;
-  color: black;
+  color: white !important;
   padding: 4px 8px;
-  display: none;
+  opacity: 1 !important;
+  /*display: none;*/
 }
 </style>

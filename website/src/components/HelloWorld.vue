@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <div class="row">
-      <div class="col-sm-8" style="background-color: beige">
+      <div class="col-sm-8">
         <div class="row">
             <div class="col-sm-8">
                 <Button 
