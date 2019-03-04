@@ -7,6 +7,7 @@
 <script>
 import {event as currentEvent} from 'd3';
 import population from '../../public/population.json';
+import totalRevenue from '../../public/country.json';
 
 const d3 = {
     ...require('d3'),
@@ -27,6 +28,7 @@ export default {
   data() {
       return {
         population: population,
+        totalRevenue: totalRevenue,
         // from colorbrewer (http://colorbrewer2.org/)
         colours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
         //Map dimensions (in pixels)
@@ -138,6 +140,7 @@ export default {
           this.revenuelist = data;
           var min = d3.min(Object.values(data))
           var max = d3.max(Object.values(data))
+          console.log(min + ";" + max);
 
           var currentComponent = this;
           // set the domain for the colors
@@ -218,17 +221,21 @@ export default {
 
     // Rounding function for values
     valueFormat: function(d) {
-      if (d > 1000000000) {
-        return Math.round(d / 1000000000 * 10) / 10 + "B $";
-      } else if (d > 1000000) {
-        return Math.round(d / 1000000 * 10) / 10 + "M $";
-      } else if (d > 1000) {
-        return Math.round(d / 1000 * 10) / 10 + "K $";
-      } else if (d < 1) {
-        return d.toFixed(2) + " $";
-      } else {
-        return d;
-      }
+        if (this.mode == 'revenue') {
+              if (d > 1000000000) {
+                return " $" + Math.round(d / 1000000000 * 10) / 10 + " B";
+              } else if (d > 1000000) {
+                return " $" + Math.round(d / 1000000 * 10) / 10 + " M";
+              } else if (d > 1000) {
+                return " $" + Math.round(d / 1000 * 10) / 10 + " K";
+              } else if (d < 5) {
+                return " $" + d.toFixed(2);
+              } else {
+                return d;
+              }
+        } else {
+                return " " + d.toFixed(2);
+        }
     },
     loadTotalRevenue: function() {
 
