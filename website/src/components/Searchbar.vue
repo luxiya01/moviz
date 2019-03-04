@@ -211,13 +211,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-div#searchbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 16px;
-    margin-bottom: 16px;
+body {
+    font-family: Verdana, Arial, "sans-serif";
 }
 div#searchbar {
     display: flex;
@@ -228,15 +223,7 @@ div#searchbar {
 div#searchbar .search-wrapper {
     position: relative;
 }
-div#searchbar .search-wrapper label {
-    position: absolute;
-    font-size: 12px;
-    color: rgba(0, 0, 0, .50);
-    top: 8px;
-    left: 12px;
-    z-index: -1;
-    transition: 0.15s all ease-in-out;
-}
+
 div#searchbar .search-wrapper input {
     padding: 4px 12px;
     color: rgba(0, 0, 0, .70);
@@ -258,26 +245,22 @@ div#searchbar .search-wrapper input::-webkit-input-placeholder {
     font-weight: 100;
 }
 
-
-
-
 div#searchbar .wrapper {
     display: block;
     width: 390px;
-    height: 600px;
+    height: 570px;
     overflow: auto;
-    /*flex-wrap: wrap;*/
-    padding-top: 12px;
+    margin-top:12px;
+    padding-top: 0;
     /*This can be removed when finished*/
-    border-style: solid;
+    /*border-style: solid;
     border-width: 1px;
-    border-color: #d9d9d9;
-
+    border-color: #d9d9d9;*/
 }
 div#searchbar .card {
     box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
     /*max-width: 124px;*/
-    margin: 12px 0;
+    margin-bottom: 12px;
     transition: 0.15s all ease-in-out;
     text-align: left;
 }
@@ -296,6 +279,12 @@ div#searchbar .card .topCard{
     height: 150px;
     cursor: pointer;
 }
+
+div#searchbar .card .topCard p{
+    margin: 0;
+}
+
+
 div#searchbar .card img {
     height: inherit;
     float: left;
@@ -305,11 +294,73 @@ div #searchbar .card .bottomCard {
 
 }
 
-
 .roll-enter-active, .roll-leave-active {
     transition: opacity .5s;
 }
 .roll-enter, .roll-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+}
+
+/* ------ Sorting options ------ */
+
+#searchbar .options {
+    margin: 10px 0;
+}
+
+/* Custom labels: the container */
+.checkcontainer {
+    display: inline;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    -webkit-user-select: none; /* Chrome, Opera, Safari */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+}
+/* Hide the browser's default checkbox */
+.checkcontainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+/* Create a custom radio button */
+.radiobtn{
+    position: absolute;
+    top: 2px;
+    left: 14px;
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+    border-radius: 50%;
+}
+/* On mouse-over, add a grey background color */
+.checkcontainer:hover input ~ .radiobtn{
+    background-color: #ccc;
+}
+/* When the radio button is checked, add a blue background */
+.checkcontainer input:checked ~ .radiobtn{
+    background-color: #2196F3;
+}
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radiobtn:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+/* Show the indicator (dot/circle) when checked */
+/*.checkcontainer input:checked ~ .radiobtn:after {
+    display: block;
+}*/
+/* Style the indicator (dot/circle) */
+.checkcontainer .radiobtn:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
 }
 </style>
