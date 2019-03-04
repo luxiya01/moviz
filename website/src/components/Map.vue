@@ -91,7 +91,14 @@ export default {
         if (this.mode == 'imdb-rating') {
             this.loadIMDBRating();
         } else if (val == 'revenue' && preVal == 'imdb-rating'){
-            this.loadTotalRevenue();
+          var tempList = Object.entries(this.totalRevenue);
+            // take out each countries value
+            tempList.forEach(function(d) {
+              var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
+              value = Number(value);
+              tempList[d[0]] = +value;
+            });
+            this.updateMapHelper(tempList);
         }
         else{
             this.loadMovieData();
