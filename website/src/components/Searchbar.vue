@@ -24,7 +24,8 @@
     </div>
 
     <div class="wrapper">
-        <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)">
+        <div class="card" v-for="movie in filteredList"
+            v-on:click="selectMovie(movie)" v-bind:key="movie.id">
             <div class="topCard">
                 <img v-bind:src="getImage(movie)"/>
                 <p>{{movie.title}}<br/>
