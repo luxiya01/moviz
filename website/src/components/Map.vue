@@ -230,7 +230,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 body {
   font: 18px sans-serif;
 }
