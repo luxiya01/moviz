@@ -7,9 +7,8 @@
                 <Button 
                     v-bind:options="[
                         {text: 'Revenue', value: 'revenue'},
-                        {text: 'Temp', value: 'temp'},
-                        {text: 'Average IMDB Rating', value: 'imbd-rating'}]"
-                    v-on:selection-change="datatype=$event"/>
+                        {text: 'Average IMDB Rating', value: 'imdb-rating'}]"
+                    v-on:selection-change="mode=$event"/>
             </div>
             <div class="col-sm-4">
                 <Button 
@@ -19,7 +18,8 @@
                     v-on:selection-change="scale=$event"/>
             </div>
         </div>
-        <Map v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"/>
+        <Map v-bind:ratingsJSON="ratingsJSON" v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"
+            v-bind:mode="mode" v-bind:scale="scale"/>
       </div>
       <div class="col-sm-4">
         <Searchbar v-bind:movieList="movieList"
@@ -34,6 +34,7 @@ import Button from '@/components/Button.vue'
 import Map from '@/components/Map.vue'
 import Searchbar from '@/components/Searchbar.vue'
 import movieJSON from '../../../database/merged_readable.json';
+import ratingsJSON from '../../../database/average_rating.json';
 import * as d3 from 'd3';
 
 export default {
@@ -46,16 +47,17 @@ export default {
   },
   data() {
       return {
-          datatype: 'revenue',
+          mode: 'revenue',
           scale: 'total',
           movieid: '',
           movieJSON: movieJSON,
-          movieList: Object.values(movieJSON)
+          movieList: Object.values(movieJSON),
+          ratingsJSON: ratingsJSON
       }
   },
   computed: {
       filename() {
-          return this.datatype + ' ' + this.scale;
+          return this.mode + ' ' + this.scale;
       }
   },
   methods: {

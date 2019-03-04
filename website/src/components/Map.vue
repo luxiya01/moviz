@@ -6,6 +6,8 @@
 
 <script>
 import {event as currentEvent} from 'd3';
+import population from '../../public/population.json';
+
 const d3 = {
     ...require('d3'),
     ...require('d3-geo'),
@@ -17,10 +19,14 @@ export default {
   name: 'Map',
   props: {
     movieJSON: Object,
-    movieid: String
+    movieid: String,
+    mode: String,
+    scale: String,
+    ratingsJSON: Object
   },
   data() {
       return {
+        population: population,
         // from colorbrewer (http://colorbrewer2.org/)
         colours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
         //Map dimensions (in pixels)
@@ -68,11 +74,27 @@ export default {
       }
   },
   watch: {
-      movieid: function(val, oldVal) {
-          this.loadMovieData();
+      movieid: function() {
+          this.updateMap();
+      },
+      mode: function() {
+          this.updateMap();
+      },
+      scale: function() {
+          this.updateMap();
       }
   },
   methods: {
+    updateMap: function() {
+        if (this.mode == 'imdb-rating') {
+            this.loadIMDBRating();
+        } else {
+            this.loadMovieData();
+        }
+    },
+    loadIMDBRating: function() {
+        this.updateMapHelper(this.ratingsJSON);
+    },
     // function takes a movie id as input and repaints the map
     loadMovieData: function(){
 
@@ -81,7 +103,6 @@ export default {
 
       var countryarray = Object.entries(selectedmovierevenue);
 
-      var revenuelist;
       // placeholder revenue
       var newrevenuelist = {};
 
@@ -97,22 +118,35 @@ export default {
       // separate addition for USA
       newrevenuelist["USA"] = +usarevenue;
 
-      // update revenue list
-      revenuelist = newrevenuelist;
+      var currentComponent = this;
 
-      var min = d3.min(Object.values(revenuelist))
-      var max = d3.max(Object.values(revenuelist))
+      if (this.scale == 'per-capita') {
+          countryarray = Object.entries(newrevenuelist);
+          countryarray.forEach(function(d) {
+              var num = newrevenuelist[d[0]];
+              newrevenuelist[d[0]] = num/Number(currentComponent.population[d[0]]);
+          })
+      };
 
-      var colScale = this.colScale;
-      // set the domain for the colors
-      colScale.domain([min,max]);
-
-      // repaint the countries
-      this.features.selectAll("path")
-        .style("fill", function (d,i) {
-          return (revenuelist[d.properties.name] ? colScale(revenuelist[d.properties.name]) : "#ccc");
-        });
+      this.updateMapHelper(newrevenuelist);
+      
     },
+      updateMapHelper: function(data) {
+          var min = d3.min(Object.values(data))
+          var max = d3.max(Object.values(data))
+
+          var currentComponent = this;
+          // set the domain for the colors
+          currentComponent.colScale.domain([min,max]);
+
+          // repaint the countries
+          this.features.selectAll("path")
+            .style("fill", function (d,i) {
+              return (data[d.properties.name] ?
+                  currentComponent.colScale(data[d.properties.name]) : "#ccc");
+            });
+          console.log(currentComponent.colScale.domain());
+      },
     // Zoom to feature on click
     clicked: function(d,i) {
 
@@ -232,7 +266,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 body {
   font: 18px sans-serif;
 }
