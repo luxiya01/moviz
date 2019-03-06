@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="home">
     <div class="row">
       <div class="col-sm-8">
         <div class="row">
@@ -11,7 +11,7 @@
                     v-on:selection-change="mode=$event"/>
             </div>
             <div class="col-sm-4">
-                <Button 
+                <Button
                     v-bind:options="[
                         {text: 'Total', value: 'total'},
                         {text: 'Per Capita', value: 'per-capita'}]"
@@ -38,7 +38,7 @@ import ratingsJSON from '../../../database/average_rating.json';
 import * as d3 from 'd3';
 
 export default {
-  name: 'HelloWorld',
+  name: 'Home',
     components: {
     Button, Map, Searchbar
   },
