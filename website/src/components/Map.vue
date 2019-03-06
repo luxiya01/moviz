@@ -7,7 +7,7 @@
 <script>
 import {event as currentEvent} from 'd3';
 import population from '../../public/population.json';
-import totalRevenue from '../../public/country.json';
+import totalRevenueJSON from '../../public/country.json';
 
 const d3 = {
     ...require('d3'),
@@ -28,7 +28,6 @@ export default {
   data() {
       return {
         population: population,
-        totalRevenue: totalRevenue,
         // from colorbrewer (http://colorbrewer2.org/)
         colours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
         //Map dimensions (in pixels)
@@ -44,6 +43,17 @@ export default {
 
   },
   computed: {
+      totalRevenue() {
+          var totalRevenue = {};
+          var totalRevenueJSONList = Object.entries(totalRevenueJSON);
+          // take out each countries value
+          totalRevenueJSONList.forEach(function(d) {
+            var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
+            value = Number(value);
+            totalRevenue[d[0]] = +value;
+          });
+          return totalRevenue;
+      },
     // setup colours for choropleth
       colScale() {
         return d3.scale.quantize().range(this.colours);
@@ -84,31 +94,24 @@ export default {
       },
       scale: function(val, preVal) {
           this.updateMap();
-      }
+      },
   },
   methods: {
     updateMap: function(val, preVal) {
         if (this.mode == 'imdb-rating') {
             this.loadIMDBRating();
         } else if (val == 'revenue' && preVal == 'imdb-rating'){
-          var tempList = Object.entries(this.totalRevenue);
-            // take out each countries value
-            tempList.forEach(function(d) {
-              var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
-              value = Number(value);
-              tempList[d[0]] = +value;
-            });
-            this.updateMapHelper(tempList);
+            this.updateMapHelper(this.totalRevenue);
         }
         else{
-            this.loadMovieData();
+            this.loadMovieRevenue();
         }
     },
     loadIMDBRating: function() {
         this.updateMapHelper(this.ratingsJSON);
     },
     // function takes a movie id as input and repaints the map
-    loadMovieData: function(){
+    loadMovieRevenue: function(){
 
       // load the new data
       var selectedmovierevenue = this.movieJSON[this.movieid]["Country Total Gross"];
@@ -144,10 +147,10 @@ export default {
       
     },
       updateMapHelper: function(data) {
+          console.log(data);
           this.revenuelist = data;
           var min = d3.min(Object.values(data))
           var max = d3.max(Object.values(data))
-          console.log(min + ";" + max);
 
           var currentComponent = this;
           // set the domain for the colors
@@ -249,7 +252,6 @@ export default {
         var currentComponent = this;
         var tempList = {};
 
-        //read in initial data TODO: swap to accumulated revenue
         d3.json("country.json", function(movies) {
           movies = Object.entries(movies);
           d3.json("countries.geojson", function(geodata) {
