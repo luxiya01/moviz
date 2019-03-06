@@ -38,7 +38,7 @@ export default {
         //Position of the tooltip relative to the cursor
         tooltipOffset : {x: 20, y: -160},
         // list for movie revenues, these values are used to color countries
-        revenuelist : {},
+        current_data : {},
     }
 
   },
@@ -102,8 +102,7 @@ export default {
             this.loadIMDBRating();
         } else if (val == 'revenue' && preVal == 'imdb-rating'){
             this.updateMapHelper(this.totalRevenue);
-        }
-        else{
+        } else {
             this.loadMovieRevenue();
         }
     },
@@ -119,47 +118,46 @@ export default {
       var countryarray = Object.entries(selectedmovierevenue);
 
       // placeholder revenue
-      var newrevenuelist = {};
+      var newcurrent_data = {};
 
       countryarray.forEach(function(d) {
         var value = d[1].replace(/[^0-9\.]+/g, '');
         value = Number(value);
-        newrevenuelist[d[0]] = +value;
+        newcurrent_data[d[0]] = +value;
       });
 
       var usarevenue = this.movieJSON[this.movieid]["Domestic Total Gross"];
       usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
 
       // separate addition for USA
-      newrevenuelist["USA"] = +usarevenue;
+      newcurrent_data["USA"] = +usarevenue;
 
       var currentComponent = this;
-
-      if (this.scale == 'per-capita') {
-          countryarray = Object.entries(newrevenuelist);
-          countryarray.forEach(function(d) {
-              var num = newrevenuelist[d[0]];
-              newrevenuelist[d[0]] = num/Number(currentComponent.population[d[0]]);
-          })
-      };
-
-      this.updateMapHelper(newrevenuelist);
+      this.updateMapHelper(newcurrent_data);
       
     },
       updateMapHelper: function(data) {
-          console.log(data);
-          this.revenuelist = data;
-          var min = d3.min(Object.values(data))
-          var max = d3.max(Object.values(data))
-
           var currentComponent = this;
+          this.current_data = data;
+
+          if (this.mode == 'revenue' && this.scale == 'per-capita') {
+              var dataList = Object.entries(data);
+              dataList.forEach(function(d) {
+                  var num = d[1];
+                  currentComponent.current_data[d[0]] = num/Number(currentComponent.population[d[0]]);
+              })
+          };
+
+          var min = d3.min(Object.values(currentComponent.current_data));
+          var max = d3.max(Object.values(currentComponent.current_data));
+
           // set the domain for the colors
           currentComponent.colScale.domain([min,max]);
 
           // repaint the countries
           this.features.selectAll("path")
             .style("fill", function (d,i) {
-              return (data[d.properties.name] ?
+              return (currentComponent.current_data[d.properties.name] ?
                   currentComponent.colScale(data[d.properties.name]) : "#ccc");
             });
       },
@@ -211,7 +209,7 @@ export default {
         html += d.properties.name;    // adds the name of the country to tooltip
         html += "</span>";
         html += "<span class=\"tooltip_value\">";
-        html += (this.revenuelist[d.properties.name] ? this.valueFormat(this.revenuelist[d.properties.name]) : "No data");     // adds the data if it exists
+        html += (this.current_data[d.properties.name] ? this.valueFormat(this.current_data[d.properties.name]) : " No data");     // adds the data if it exists
         html += "";
         html += "</span>";
         html += "</div>";
@@ -262,10 +260,10 @@ export default {
               value = Number(value);
               tempList[d[0]] = +value;
             });
-            currentComponent.revenuelist = tempList;
+            currentComponent.current_data = tempList;
 
-            var min = d3.min(Object.values(currentComponent.revenuelist))
-            var max = d3.max(Object.values(currentComponent.revenuelist))
+            var min = d3.min(Object.values(currentComponent.current_data))
+            var max = d3.max(Object.values(currentComponent.current_data))
 
             // set domain for colors
             currentComponent.colScale.domain([min,max]);
@@ -283,8 +281,8 @@ export default {
               .on("mouseout",currentComponent.hideTooltip)
               .on("click",currentComponent.clicked)
               .style("fill", function (d,i) {
-                return (currentComponent.revenuelist[d.properties.name] ?
-                    currentComponent.colScale(currentComponent.revenuelist[d.properties.name]) : "#ccc"); });;
+                return (currentComponent.current_data[d.properties.name] ?
+                    currentComponent.colScale(currentComponent.current_data[d.properties.name]) : "#ccc"); });;
           });
         });
   },
