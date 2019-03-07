@@ -130,6 +130,7 @@ class IMDBInfoScrapper:
             release_date = soup.find('h4', text='Release Date:').parent.text
             release_date = release_date.split(':')[1].split('\n')[0].strip()
             current_movie_dict['release_date'] = release_date
+            current_movie_dict['release_year'] = int(release_date.split()[2])
         except Exception as err:
             print(
                 self._generate_error_msg(
