@@ -11,8 +11,8 @@ def get_data(json_file):
 def get_movies_per_country(movie_data):
     countries = defaultdict(list)
     for key, value in movie_data.items():
-        if 'Country' in value and 'rating' in value:
-            for c in value['Country']:
+        if 'country' in value and 'rating' in value:
+            for c in value['country']:
                 countries[c].append(key)
     return countries
 
@@ -38,9 +38,9 @@ def get_average_rating_per_country(movie_data):
 def construct_country_json(countries, ratings, average_rating):
     country_data = defaultdict(dict)
     for c, movies in countries.items():
-        country_data[c]['Movies'] = movies
-        country_data[c]['Ratings'] = ratings[c]
-        country_data[c]['Average Rating'] = average_rating[c]
+        country_data[c]['movies'] = movies
+        country_data[c]['ratings'] = ratings[c]
+        country_data[c]['average_rating'] = average_rating[c]
     return country_data
 
 
@@ -50,7 +50,7 @@ def data_to_json(dictionary, filename):
 
 
 def main():
-    movie_data = get_data('first_600_movies.json')
+    movie_data = get_data('merged_data.json')
     countries = get_movies_per_country(movie_data)
     data_to_json(countries, 'movies_per_country.json')
     ratings = get_movies_rating_per_country(movie_data)
