@@ -26,10 +26,10 @@
       <router-view />
     </div>
 
-  <b-tooltip target="homeDesc" placement="righttop" >
+  <b-tooltip class="tooltip" target="homeDesc" placement="bottomleft" >
     See moViz visualization
   </b-tooltip>
-  <b-tooltip target="aboutDesc" placement="righttop">
+  <b-tooltip class="tooltip" target="aboutDesc" placement="bottomleft">
     About the project
   </b-tooltip>
 
@@ -111,4 +111,7 @@ a:hover{
   color: #ffffff;
 }*/
 
+.tooltip {
+    pointer-events: none;
+}
 </style>
