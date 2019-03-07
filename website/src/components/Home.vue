@@ -23,7 +23,8 @@
       </div>
       <div class="col-sm-4">
         <Searchbar v-bind:movieList="movieList"
-        v-on:movie-selection="movieid=$event"/>
+        v-on:movie-selection="movieid=$event"
+        v-on:reset="movieid=''"/>
       </div>
     </div>
   </div>

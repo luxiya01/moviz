@@ -93,7 +93,11 @@ export default {
   },
   watch: {
       movieid: function(val, preVal) {
-          this.loadMovieRevenue();
+          if (val == '') {
+              this.updateMapHelper(this.totalRevenue);
+          } else {
+              this.loadMovieRevenue();
+          }
       },
       mode: function(val, preVal) {
           if (val == 'imdb-rating') {
