@@ -120,14 +120,16 @@ export default {
                 this.isSelected = true;
                 this.search = this.selectedMovieName;
                 this.currentScrollPosition = $(".wrapper").scrollTop();
+                this.$emit('movie-selection', movie.id);
             } else {
                 //TODO: perhaps change this so that this happens when you click on a reset button instead of the entire card
                 this.isSelected = false;
                 this.selectedMovieName = "";
                 this.search = "";
                 this.updateCurrentScrollPosition = true;
+
+                this.$emit('reset');
             }
-            this.$emit('movie-selection', movie.id);
         },
         hasSearchBarChanged() {
             if(this.search !== this.selectedMovieName){
