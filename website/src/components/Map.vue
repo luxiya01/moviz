@@ -32,8 +32,10 @@ export default {
         // from colorbrewer (http://colorbrewer2.org/)
         colours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
         //Map dimensions (in pixels)
-        width : 900,
-        height : 500,
+//        width : 900,
+//        height : 500,
+        width: 0, 
+        height: 0,
         //Keeps track of currently zoomed feature
         centered : null,
         //Position of the tooltip relative to the cursor
@@ -62,9 +64,10 @@ export default {
     //Map projection
       projection() {
           return d3.geoRobinson()
-                    .scale(137.67011618797827)
+                    .scale(this.width/5)
+//                    .scale(137.67011618797827)
                     .center([-0.0018057527730242487,11.258678472759552]) //projection center
-                    .translate([this.width/2,this.height/2]) //translate to center the map in view
+                    .translate([this.width/2.2,this.height/2]) //translate to center the map in view
       },
     //Generate paths based on projection
       path() {
@@ -73,11 +76,12 @@ export default {
       
     //Create an SVG
       svg (){
-       return d3.select(".map").append("svg")
+       d3.select(".map").append("svg")
             .attr("class", "worldMap")
             .attr("width", this.width)
             .attr("height", this.height)
-            .style("z-index", "-10")
+            .style("z-index", "-10");
+          return d3.select('svg');
       },
 
     //Group for the map features
@@ -309,8 +313,10 @@ export default {
       },
   },
   mounted() {
+      this.width = document.querySelector('.map').clientWidth;
+      this.height =  document.querySelector('.map').clientWidth/1.5;
       this.loadTotalRevenue();
-  }
+  },
 }
 </script>
 
