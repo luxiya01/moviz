@@ -1,10 +1,7 @@
 <template>
 
   <div class="about">    
-    <link rel="stylesheet" 
-        href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" 
-        integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" 
-        crossorigin="anonymous">
+    
 
     <div  class="container">
       <div id="project" class="container">
@@ -156,7 +153,7 @@
                 </div>
               </div>
               <p>Li Ling</p>
-              <p>Back-end</p>
+              <p>Front-end / Back-end</p>
               <a href="https://github.com/luxiya01"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
             </div>
@@ -237,18 +234,15 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      
+      <p align="left" style="margin-top:1em;"> 
+        Praesent a dui quam. Mauris porttitor magna et nunc condimentum pharetra. Quisque sit amet tortor quis augue aliquet mattis. Nam ullamcorper sodales hendrerit. Etiam eu consequat neque. Morbi varius sit amet sem ut varius. Sed eu dolor bibendum neque aliquet dignissim vitae id dui. Duis bibendum metus in tellus tincidunt aliquam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit odio, varius sagittis finibus at, ornare non arcu. Nam facilisis risus sit amet orci cursus accumsan. Pellentesque rhoncus mattis enim, ac aliquet leo accumsan ac. Quisque laoreet lacinia eros. Aliquam erat volutpat. Ut felis est, vulputate a congue vitae, dictum et dui. Ut aliquet sodales mi, a hendrerit tortor. 
+      </p>
     </div>
   </b-modal>
 
@@ -280,7 +274,7 @@
     <div class="container modalView" align="center">
       <div class="li members"> </div>
       <h2> Li Ling </h2>
-      <h4> Back-end</h4>
+      <h4> Front-end / Back-end</h4>
     </div>
     <br/>
     <div class="modalView">
@@ -332,7 +326,7 @@
 
 <style >
 .modalView {
-  color: black
+  color: black;
 }
 .members {
   position: relative;
@@ -366,17 +360,18 @@ a button {
   background-size: cover;  
 }
 .li{
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/li.jpg?alt=media&token=282d896a-47d1-457e-bbe2-a7c46131da7c");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/li.jpg?alt=media&token=cafd9291-1b1d-4ae4-8b34-e0602d916455");
   background-size: cover;  
+  background-position: 0px -15px;
 }
 .mats{
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/mats.jpg?alt=media&token=9280fda9-eb72-4428-90fb-7f7cf93082ef");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/mats.jpg?alt=media&token=8f041aa4-7d11-4d56-944a-1878407124f8");
   background-size: cover;
 }
 .axel{
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/axel.jpg?alt=media&token=d12baa9c-b7d7-48f8-838b-bbcf3d7ee8ef");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/axel2.jpg?alt=media&token=bf7e5625-d3f8-4640-be83-c80447ee85b6");
   background-size: cover;
-  background-position-y: -2.5em;
+  background-position-y: -.7em;
 }
 .linette {
   background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/linette.jpg?alt=media&token=fcdef7d7-ad69-47f5-a460-085ae3244176");
