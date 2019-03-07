@@ -37,7 +37,7 @@ export default {
         //Keeps track of currently zoomed feature
         centered : null,
         //Position of the tooltip relative to the cursor
-        tooltipOffset : {x: 20, y: -160},
+        tooltipOffset : {x: -40, y: -50},
         // list for movie revenues, these values are used to color countries
         currentData : {},
     }
