@@ -11,7 +11,7 @@
                     v-on:selection-change="mode=$event"/>
             </div>
             <div class="col-sm-4">
-                <Button
+                <Button v-if="mode=='revenue'"
                     v-bind:options="[
                         {text: 'Total', value: 'total'},
                         {text: 'Per Capita', value: 'per-capita'}]"
