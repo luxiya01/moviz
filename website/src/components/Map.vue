@@ -87,28 +87,31 @@ export default {
   },
   watch: {
       movieid: function(val, preVal) {
-          this.updateMap();
+          this.loadMovieRevenue();
       },
       mode: function(val, preVal) {
-          this.updateMap(val, preVal);
+          if (val == 'imdb-rating') {
+              this.updateMapHelper(this.ratingsJSON);
+          } else {
+              this.updateMapHelper(this.totalRevenue);
+          }
       },
       scale: function(val, preVal) {
-          this.updateMap();
+          if (val == 'per-capita' && preVal == 'total') {
+              this.updateMapHelper(this.current_data);
+          }
+          if (val == 'total' && preVal == 'per-capita') {
+              var currentComponent = this;
+              var dataList = Object.entries(this.current_data);
+              dataList.forEach(function(d) {
+                  var num = d[1];
+                  currentComponent.current_data[d[0]] = num*Number(currentComponent.population[d[0]]);
+              })
+              this.updateMapHelper(this.current_data);
+          }
       },
   },
   methods: {
-    updateMap: function(val, preVal) {
-        if (this.mode == 'imdb-rating') {
-            this.loadIMDBRating();
-        } else if (val == 'revenue' && preVal == 'imdb-rating'){
-            this.updateMapHelper(this.totalRevenue);
-        } else {
-            this.loadMovieRevenue();
-        }
-    },
-    loadIMDBRating: function() {
-        this.updateMapHelper(this.ratingsJSON);
-    },
     // function takes a movie id as input and repaints the map
     loadMovieRevenue: function(){
 
@@ -236,7 +239,7 @@ export default {
                 return " $" + Math.round(d / 1000000 * 10) / 10 + " M";
               } else if (d > 1000) {
                 return " $" + Math.round(d / 1000 * 10) / 10 + " K";
-              } else if (d < 5) {
+              } else if (d < 100) {
                 return " $" + d.toFixed(2);
               } else {
                 return d;
