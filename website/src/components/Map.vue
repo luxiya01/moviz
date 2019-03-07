@@ -13,7 +13,8 @@ const d3 = {
     ...require('d3'),
     ...require('d3-geo'),
     ...require('d3-geo-projection'),
-    ...require('d3-array')
+    ...require('d3-array'),
+    ...require('d3-svg-legend')
 };
 
 export default {
@@ -83,6 +84,11 @@ export default {
       features() {
           return this.svg.append("g")
                     .attr("class","features");
+      },
+      legend() {
+          return d3.legend.color()
+                      .labelFormat(this.valueFormat)
+                      .scale(this.colScale);
       }
   },
   watch: {
@@ -163,6 +169,7 @@ export default {
               return (currentComponent.current_data[d.properties.name] ?
                   currentComponent.colScale(data[d.properties.name]) : "#ccc");
             });
+          this.svg.select('.legend').call(this.legend);
       },
     // Zoom to feature on click
     clicked: function(d,i) {
@@ -286,9 +293,15 @@ export default {
               .style("fill", function (d,i) {
                 return (currentComponent.current_data[d.properties.name] ?
                     currentComponent.colScale(currentComponent.current_data[d.properties.name]) : "#ccc"); });;
+
+            // Add legend
+            currentComponent.svg.append("g")
+              .attr("class", "legend")
+              .attr('transform', 'translate(20,350)');
+            currentComponent.svg.select('.legend').call(currentComponent.legend);
           });
         });
-  },
+      },
   },
   mounted() {
       this.loadTotalRevenue();
