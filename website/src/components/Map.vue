@@ -39,7 +39,7 @@ export default {
         //Position of the tooltip relative to the cursor
         tooltipOffset : {x: 20, y: -160},
         // list for movie revenues, these values are used to color countries
-        current_data : {},
+        currentData : {},
     }
 
   },
@@ -108,16 +108,16 @@ export default {
       },
       scale: function(val, preVal) {
           if (val == 'per-capita' && preVal == 'total') {
-              this.updateMapHelper(this.current_data);
+              this.updateMapHelper(this.currentData);
           }
           if (val == 'total' && preVal == 'per-capita') {
               var currentComponent = this;
-              var dataList = Object.entries(this.current_data);
+              var dataList = Object.entries(this.currentData);
               dataList.forEach(function(d) {
                   var num = d[1];
-                  currentComponent.current_data[d[0]] = num*Number(currentComponent.population[d[0]]);
+                  currentComponent.currentData[d[0]] = num*Number(currentComponent.population[d[0]]);
               })
-              this.updateMapHelper(this.current_data);
+              this.updateMapHelper(this.currentData);
           }
       },
   },
@@ -131,38 +131,38 @@ export default {
       var countryarray = Object.entries(selectedmovierevenue);
 
       // placeholder revenue
-      var newcurrent_data = {};
+      var newcurrentData = {};
 
       countryarray.forEach(function(d) {
         var value = d[1].replace(/[^0-9\.]+/g, '');
         value = Number(value);
-        newcurrent_data[d[0]] = +value;
+        newcurrentData[d[0]] = +value;
       });
 
       var usarevenue = this.movieJSON[this.movieid]["Domestic Total Gross"];
       usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
 
       // separate addition for USA
-      newcurrent_data["USA"] = +usarevenue;
+      newcurrentData["USA"] = +usarevenue;
 
       var currentComponent = this;
-      this.updateMapHelper(newcurrent_data);
+      this.updateMapHelper(newcurrentData);
       
     },
       updateMapHelper: function(data) {
           var currentComponent = this;
-          this.current_data = data;
+          this.currentData = data;
 
           if (this.mode == 'revenue' && this.scale == 'per-capita') {
               var dataList = Object.entries(data);
               dataList.forEach(function(d) {
                   var num = d[1];
-                  currentComponent.current_data[d[0]] = num/Number(currentComponent.population[d[0]]);
+                  currentComponent.currentData[d[0]] = num/Number(currentComponent.population[d[0]]);
               })
           };
 
-          var min = d3.min(Object.values(currentComponent.current_data));
-          var max = d3.max(Object.values(currentComponent.current_data));
+          var min = d3.min(Object.values(currentComponent.currentData));
+          var max = d3.max(Object.values(currentComponent.currentData));
 
           // set the domain for the colors
           currentComponent.colScale.domain([min,max]);
@@ -170,7 +170,7 @@ export default {
           // repaint the countries
           this.features.selectAll("path")
             .style("fill", function (d,i) {
-              return (currentComponent.current_data[d.properties.name] ?
+              return (currentComponent.currentData[d.properties.name] ?
                   currentComponent.colScale(data[d.properties.name]) : "#ccc");
             });
           this.svg.select('.legend').call(this.legend);
@@ -223,7 +223,7 @@ export default {
         html += d.properties.name;    // adds the name of the country to tooltip
         html += "</span>";
         html += "<span class=\"tooltip_value\">";
-        html += (this.current_data[d.properties.name] ? this.valueFormat(this.current_data[d.properties.name]) : " No data");     // adds the data if it exists
+        html += (this.currentData[d.properties.name] ? this.valueFormat(this.currentData[d.properties.name]) : " No data");     // adds the data if it exists
         html += "";
         html += "</span>";
         html += "</div>";
@@ -274,10 +274,10 @@ export default {
               value = Number(value);
               tempList[d[0]] = +value;
             });
-            currentComponent.current_data = tempList;
+            currentComponent.currentData = tempList;
 
-            var min = d3.min(Object.values(currentComponent.current_data))
-            var max = d3.max(Object.values(currentComponent.current_data))
+            var min = d3.min(Object.values(currentComponent.currentData))
+            var max = d3.max(Object.values(currentComponent.currentData))
 
             // set domain for colors
             currentComponent.colScale.domain([min,max]);
@@ -295,8 +295,8 @@ export default {
               .on("mouseout",currentComponent.hideTooltip)
               .on("click",currentComponent.clicked)
               .style("fill", function (d,i) {
-                return (currentComponent.current_data[d.properties.name] ?
-                    currentComponent.colScale(currentComponent.current_data[d.properties.name]) : "#ccc"); });;
+                return (currentComponent.currentData[d.properties.name] ?
+                    currentComponent.colScale(currentComponent.currentData[d.properties.name]) : "#ccc"); });;
 
             // Add legend
             currentComponent.svg.append("g")
