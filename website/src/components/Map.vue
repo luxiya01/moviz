@@ -301,6 +301,7 @@ export default {
             // Add legend
             currentComponent.svg.append("g")
               .attr("class", "legend")
+              .style({'fill': 'white'})
               .attr('transform', 'translate(20,350)');
             currentComponent.svg.select('.legend').call(currentComponent.legend);
           });
@@ -346,4 +347,5 @@ div.tooltip {
   opacity: 1 !important;
   /*display: none;*/
 }
+
 </style>
