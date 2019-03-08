@@ -24,7 +24,8 @@ export default {
     movieid: String,
     mode: String,
     scale: String,
-    ratingsJSON: Object
+    ratingsJSON: Object,
+    year: String
   },
   data() {
       return {
@@ -44,15 +45,6 @@ export default {
 
   },
   computed: {
-      totalRevenue() {
-          var totalRevenue = {};
-          var totalRevenueJSONList = Object.entries(totalRevenueJSON);
-          // take out each countries value
-          totalRevenueJSONList.forEach(function(d) {
-            totalRevenue[d[0]] = d[1]['revenue'];
-          });
-          return totalRevenue;
-      },
     // setup colours for choropleth
       colScale() {
         return d3.scale.quantize().range(this.colours);
@@ -90,18 +82,25 @@ export default {
       }
   },
   watch: {
+      year: function(val, preVal) {
+          if (this.mode == 'imdb-rating') {
+              this.changeYearRating()
+          } else {
+              this.changeYearRevenue()
+          }
+      },
       movieid: function(val, preVal) {
           if (val == '') {
-              this.updateMapHelper(this.totalRevenue);
+              this.changeYearRevenue();
           } else {
               this.loadMovieRevenue();
           }
       },
       mode: function(val, preVal) {
           if (val == 'imdb-rating') {
-              this.updateMapHelper(this.ratingsJSON);
+              this.changeYearRating();
           } else {
-              this.updateMapHelper(this.totalRevenue);
+              this.changeYearRevenue();
           }
       },
       scale: function(val, preVal) {
@@ -120,6 +119,66 @@ export default {
       },
   },
   methods: {
+    changeYearRating: function() {
+        var rating_sum = {};
+        var num_movies = {};
+        Object.entries(population).forEach(function(d) {
+            rating_sum[d[0]] = 0;
+            num_movies[d[0]] = 0;
+        })
+
+        var year = this.year;
+        Object.entries(this.movieJSON).forEach(function(d) {
+            if (d[1].country && d[1].rating) {
+                var curr_rating = d[1].rating;
+                if (year == '2000 - 2019') {
+                    d[1]['country'].forEach(function(c) {
+                        rating_sum[c] += curr_rating;
+                        num_movies[c] += 1;
+                    })
+                } else if (d[1].release_year == year) {
+                    d[1]['country'].forEach(function(c) {
+                        rating_sum[c] += curr_rating;
+                        num_movies[c] += 1;
+                    })
+            }
+            }});
+
+        var tmp = {};
+        Object.entries(rating_sum).forEach(function(d) {
+            console.log(d)
+            if (num_movies[d[0]] > 0) {
+                tmp[d[0]] = d[1]/num_movies[d[0]];
+            }
+        })
+        this.updateMapHelper(tmp);
+    },
+    changeYearRevenue: function() {
+        var tmp = {};
+        var year = this.year;
+        Object.entries(this.movieJSON).forEach(function(d) {
+            if (year == '2000 - 2019') {
+                Object.entries(d[1].country_total_gross).forEach(function(c) {
+                    if (!tmp[c[0]]) {
+                        tmp[c[0]] = 0;
+                    }
+                    tmp[c[0]] += c[1];
+                })
+            } else {
+                if (d[1].release_year == year) {
+                    Object.entries(d[1].country_total_gross).forEach(function(c) {
+                        if (! tmp[c[0]]) {
+                            tmp[c[0]] = 0;
+                        }
+                        tmp[c[0]] += c[1];
+                    })
+                }
+            }
+        }
+        );
+        console.log(tmp)
+        this.updateMapHelper(tmp)
+    },
     // function takes a movie id as input and repaints the map
     loadMovieRevenue: function(){
 
