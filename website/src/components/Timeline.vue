@@ -28,18 +28,24 @@ export default {
             year: '',
             yearStringDefault: '2000 - 2019',
             yearString: '',
-            yearRange: Array.from({length: 19}, (x, i) => 2000 + i)
+            yearRange: Array.from({length: 19}, (x, i) => 2000 + i),
+            deselected: true
         }
     },
     methods: {
         signalChange: function(evt) {
-            this.yearString = this.year;
-            this.$emit('selection-change',this.yearString);
+            if (!this.deselected) {
+                this.yearString = this.year;
+                this.$emit('selection-change',this.yearString);
+            } else {
+                this.deselected = false;
+            }
         },
         deselectYear: function(evt) {
-            this.$emit('deselect-year');
-            this.year = '2020';
+            this.deselected = true;
             this.yearString = this.yearStringDefault;
+            this.year = '2000';
+            this.$emit('deselect-year');
         }
     },
     mounted() {
