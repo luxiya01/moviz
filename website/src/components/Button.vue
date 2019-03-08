@@ -32,10 +32,10 @@ export default {
 
 <style>
 
-:focus {
+/*:focus {
   transform: scale(0.95);
 
-}
+}*/
 
 </style>
 

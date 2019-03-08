@@ -53,11 +53,21 @@ export default {
 </script>
 
 <style>
-.router-link-exact-active.vsm-link {
-    -webkit-box-shadow: 3px 0 0 0 #4285f4 inset;
-    box-shadow: inset 3px 0 0 0 #4285f4;
+.checkcontainer input:checked ~ .radiobtn[data-v-a8dcc02a] {
+    background-color: #b82929 !important;
 }
 
+.btn-secondary.active {
+  background-color: #545b62 !important;
+}
+
+.router-link-exact-active.vsm-link {
+    -webkit-box-shadow: 3px 0 0 0 #b82929 inset;
+    box-shadow: inset 3px 0 0 0 #b82929;
+}
+.vsm-item{
+    padding-left: .7em;
+}
 .v-sidebar-menu {
     position: fixed;
     top: 0;
