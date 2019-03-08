@@ -18,9 +18,11 @@
                     v-on:selection-change="scale=$event"/>
             </div>
         </div>
-        <Map v-bind:ratingsJSON="ratingsJSON" v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"
-            v-bind:mode="mode" v-bind:scale="scale"/>
-        <Timeline v-on:selection-change="year=$event"/>
+        <Map v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"
+            v-bind:mode="mode" v-bind:scale="scale" v-bind:year="year"/>
+        <Timeline v-on:selection-change="year=$event"
+                        v-on:deselect-year="year='2000 - 2019'"
+        />
       </div>
       <div class="col-sm-4">
         <Searchbar v-bind:movieList="movieList"
@@ -37,8 +39,6 @@ import Map from '@/components/Map.vue'
 import Searchbar from '@/components/Searchbar.vue'
 import Timeline from '@/components/Timeline.vue'
 import movieJSON from '../../../database/merged_data_readable.json';
-import testJSON from '../../../database/test.json';
-import ratingsJSON from '../../../database/average_rating.json';
 import * as d3 from 'd3';
 
 export default {
@@ -54,18 +54,22 @@ export default {
           mode: 'revenue',
           scale: 'total',
           movieid: '',
-          year: 2000,
+          year: '2000 - 2019',
           movieJSON: movieJSON,
           movieList: Object.values(movieJSON),
-          ratingsJSON: ratingsJSON
       }
   },
   watch: {
       year: function() {
           var tmp = this.year;
-          this.movieList = Object.values(movieJSON).filter(function (el) {
-              return el.release_year == tmp;
-          })
+
+          if (tmp == '2000 - 2019') {
+              this.movieList = Object.values(movieJSON);
+          } else {
+              this.movieList = Object.values(movieJSON).filter(function (el) {
+                  return el.release_year == tmp;
+              })
+          }
       }
   },
   computed: {
