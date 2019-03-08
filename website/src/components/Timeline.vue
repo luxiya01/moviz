@@ -7,7 +7,7 @@
             <div class="col-sm-9">
                 <b-form-input class="custom-range" type="range" id="timeline" v-model="year"
                             min="2000" max="2020" step="1"
-                            v-on:change="signalChange"
+                            v-on:input="signalChange"
                             />
             </div>
             <div class="col-sm-1">
@@ -25,7 +25,7 @@ export default {
     data() {
         return {
             value: 0,
-            year: 2000,
+            year: '',
             yearStringDefault: '2000 - 2019',
             yearString: '',
             yearRange: Array.from({length: 19}, (x, i) => 2000 + i)
@@ -34,11 +34,11 @@ export default {
     methods: {
         signalChange: function(evt) {
             this.yearString = this.year;
-            this.$emit('selection-change',evt);
+            this.$emit('selection-change',this.yearString);
         },
         deselectYear: function(evt) {
             this.$emit('deselect-year');
-            this.year = 2020;
+            this.year = '2020';
             this.yearString = this.yearStringDefault;
         }
     },
