@@ -39,9 +39,11 @@
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
                     <p >
                     <b>Rating</b>: {{movie.rating}}<br/>
-                    <b>Budget</b>: {{movie.Budget}}<br/>
-                    <b>Production Country</b>: <span v-for="country in movie.Country" v-bind:key="country"> {{country+", "}}</span><br/>
-                    <b>Genres</b>: <span v-for="genres in movie.genres" v-bind:key="genres"> {{genres+", "}}</span> <br/>
+                    <b>Budget</b>: {{selectedMovieBudgetString}}<br/>
+                    <b>Total Revenue</b>: {{selectedMovieTotalRevenueString}}<br/>
+                    <b>Release Date</b>: {{movie.release_date}}<br/>
+                    <b>Production Country</b>: <span v-for="country in movie.country" v-bind:key="country"> {{country+", "}}</span><br/>
+                    <b>Genres</b>: <span v-for="genres in movie.genre" v-bind:key="genres"> {{genres+", "}}</span> <br/>
                     <a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> 
                 </p>
 
@@ -75,6 +77,8 @@ export default {
             search: '',
             selectedMovieID: "",
             selectedMovieName: "",
+            selectedMovieBudgetString: "",
+            selectedMovieTotalRevenueString: "",
             selectedSortingOrder: null, // this holds the current sorting function, e.g. sort by alphabet or by rating
             currentScrollPosition: 0,
             updateCurrentScrollPosition: false,
@@ -83,6 +87,20 @@ export default {
         }
     },
     methods: {
+        // Rounding function for values
+        valueFormat: function(d) {
+              if (d > 1000000000) {
+                return " $" + Math.round(d / 1000000000 * 10) / 10 + " B";
+              } else if (d > 1000000) {
+                return " $" + Math.round(d / 1000000 * 10) / 10 + " M";
+              } else if (d > 1000) {
+                return " $" + Math.round(d / 1000 * 10) / 10 + " K";
+              } else if (d < 100) {
+                return " $" + d.toFixed(2);
+              } else {
+                return d;
+              }
+        },
         // these three functions all sort in ascending order
         alphabeticOrder : function (a, b) {
             if(a.title < b.title) {
@@ -103,8 +121,8 @@ export default {
             }
         },
         revenueOrder : function (a, b) {
-            var aTotal = +a['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +a['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
-            var bTotal = +b['Foreign Total Gross'].replace(/[^0-9.-]+/g,"") + +b['Domestic Total Gross'].replace(/[^0-9.-]+/g,"");
+            var aTotal = a.foreign_total_gross;
+            var bTotal = b.foreign_total_gross;
             if(aTotal < bTotal) {
                 return 1;
             } else if(aTotal > bTotal) {
@@ -117,6 +135,8 @@ export default {
             if(!this.isSelected) {
                 this.selectedMovieID = movie.id;
                 this.selectedMovieName = movie.title;
+                this.selectedMovieBudgetString = this.valueFormat(movie.budget);
+                this.selectedMovieTotalRevenueString = this.valueFormat(movie.foreign_total_gross + movie.domestic_total_gross);
                 this.isSelected = true;
                 this.search = this.selectedMovieName;
                 this.currentScrollPosition = $(".wrapper").scrollTop();
@@ -163,7 +183,7 @@ export default {
             }
         },
         getLink(movie) {
-            return "https://www.imdb.com/title/" + movie.link;
+            return "https://www.imdb.com/" + movie.link;
         }
     },
     computed: {
@@ -188,12 +208,12 @@ export default {
             else if(this.selectedSortingOrder === this.revenueOrder) {
                 return this.movieList.filter(post => {
                     return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
-                        (post['Domestic Total Gross'] !== undefined && post['Foreign Total Gross'] !== undefined);
+                        (post['domestic_total_gross'] !== undefined && post['foreign_total_gross'] !== undefined);
                 }).sort(this.selectedSortingOrder).slice(0,700)
                     // add the remaining movies that are missing either one or both of the total grosses
                     .concat(this.movieList.filter(post => {
                         return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
-                            (post['Domestic Total Gross'] === undefined || post['Foreign Total Gross'] === undefined)
+                            (post['domestic_total_gross'] === undefined || post['foreign_total_gross'] === undefined)
                     }).sort(this.alphabeticOrder))  // sort alphabetically
             }
         }

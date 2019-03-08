@@ -34,7 +34,7 @@
 import Button from '@/components/Button.vue'
 import Map from '@/components/Map.vue'
 import Searchbar from '@/components/Searchbar.vue'
-import movieJSON from '../../../database/merged_readable.json';
+import movieJSON from '../../../database/merged_data_readable.json';
 import ratingsJSON from '../../../database/average_rating.json';
 import * as d3 from 'd3';
 

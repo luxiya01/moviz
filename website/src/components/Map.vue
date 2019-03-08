@@ -7,7 +7,7 @@
 <script>
 import {event as currentEvent} from 'd3';
 import population from '../../public/population.json';
-import totalRevenueJSON from '../../public/country.json';
+import totalRevenueJSON from '../../public/total_revenue.json';
 
 const d3 = {
     ...require('d3'),
@@ -49,9 +49,7 @@ export default {
           var totalRevenueJSONList = Object.entries(totalRevenueJSON);
           // take out each countries value
           totalRevenueJSONList.forEach(function(d) {
-            var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
-            value = Number(value);
-            totalRevenue[d[0]] = +value;
+            totalRevenue[d[0]] = d[1]['revenue'];
           });
           return totalRevenue;
       },
@@ -126,7 +124,8 @@ export default {
     loadMovieRevenue: function(){
 
       // load the new data
-      var selectedmovierevenue = this.movieJSON[this.movieid]["Country Total Gross"];
+      var selectedmovierevenue =
+            this.movieJSON[this.movieid]["country_total_gross"];
 
       var countryarray = Object.entries(selectedmovierevenue);
 
@@ -134,16 +133,8 @@ export default {
       var newcurrentData = {};
 
       countryarray.forEach(function(d) {
-        var value = d[1].replace(/[^0-9\.]+/g, '');
-        value = Number(value);
-        newcurrentData[d[0]] = +value;
+        newcurrentData[d[0]] = d[1];
       });
-
-      var usarevenue = this.movieJSON[this.movieid]["Domestic Total Gross"];
-      usarevenue = usarevenue.replace(/[^0-9\.]+/g, '');
-
-      // separate addition for USA
-      newcurrentData["USA"] = +usarevenue;
 
       var currentComponent = this;
       this.updateMapHelper(newcurrentData);
@@ -250,10 +241,10 @@ export default {
                 return " $" + Math.round(d / 1000000 * 10) / 10 + " M";
               } else if (d > 1000) {
                 return " $" + Math.round(d / 1000 * 10) / 10 + " K";
-              } else if (d < 100) {
-                return " $" + d.toFixed(2);
+              } else if (d > 10) {
+                return " $" + d.toFixed(0);
               } else {
-                return d;
+                return " $" + d.toFixed(2);
               }
         } else {
                 return " " + d.toFixed(2);
@@ -264,15 +255,13 @@ export default {
         var currentComponent = this;
         var tempList = {};
 
-        d3.json("country.json", function(movies) {
+        d3.json("total_revenue.json", function(movies) {
           movies = Object.entries(movies);
           d3.json("countries.geojson", function(geodata) {
 
             // take out each countries value
             movies.forEach(function(d) {
-              var value = d[1]['Revenue'].replace(/[^0-9\.]+/g, '');
-              value = Number(value);
-              tempList[d[0]] = +value;
+              tempList[d[0]] = d[1]['revenue'];
             });
             currentComponent.currentData = tempList;
 
