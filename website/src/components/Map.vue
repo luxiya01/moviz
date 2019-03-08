@@ -356,10 +356,18 @@ export default {
                     currentComponent.colScale(currentComponent.currentData[d.properties.name]) : "#ccc"); });;
 
             // Add legend
+            currentComponent.svg.append("rect")
+              .attr('class', 'legend-wrapper')
+              .style({'fill':'#212121', 'width': '187px', 'height': '166px',
+                  'rx':'15', 'ry': '15',
+                  'stroke-width': '2', 'stroke': 'white'
+              })
+              .attr('transform', 'translate(13,332)');
+                
             currentComponent.svg.append("g")
               .attr("class", "legend")
               .style({'fill': 'white'})
-              .attr('transform', 'translate(20,350)');
+              .attr('transform', 'translate(20,340)');
             currentComponent.svg.select('.legend').call(currentComponent.legend);
           });
         });
