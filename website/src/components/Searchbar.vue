@@ -25,17 +25,18 @@
     </div>
 
     <div class="wrapper">
-        <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)" v-bind:key="movie.id">
-            <div class="topCard">
-                <img v-bind:src="getImage(movie)"/>
-                <p>
-                    <b>{{movie.title}}</b>
-                    <br/>
-                      <svg v-if="movie.rating" class="stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path id="starPath" d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                     {{movie.rating}}<br/>
-                </p>
-            </div>
-            <!-- ><transition name="roll"><-->
+        <virtual-list :size="80" :remain="5" ref="list">
+            <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)" v-bind:key="movie.id">
+                <div class="topCard">
+                    <img v-bind:src="getImage(movie)"/>
+                    <p>
+                        <b>{{movie.title}}</b>
+                        <br/>
+                          <svg v-if="movie.rating" class="stars" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path id="starPath" d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                         {{movie.rating}}<br/>
+                    </p>
+                </div>
+                <!-- ><transition name="roll"><-->
                 <div class="bottomCard" v-show="isSelected && selectedMovieName === movie.title">
                     <p >
                     <b>Rating</b>: {{movie.rating}}<br/>
@@ -45,16 +46,18 @@
                     <b>Production Country</b>: <span v-for="country in movie.country" v-bind:key="country"> {{country+", "}}</span><br/>
                     <b>Genres</b>: <span v-for="genres in movie.genre" v-bind:key="genres"> {{genres+", "}}</span> <br/>
                     <a v-bind:href="getLink(movie)" target="_blank"> {{movie.title}} </a> 
-                </p>
+                    </p>
 
                 </div>
-            <!-- ></transition><-->
-        </div>
+                <!-- ></transition><-->
+            </div>
+        </virtual-list>
     </div>
 </div>
 </template>
 
 <script>
+import virtualList from 'vue-virtual-scroll-list'
 import JQuery from 'jquery'
 let $=JQuery
 
@@ -68,6 +71,9 @@ class Movie {
     }
 }
 export default {
+    components: {
+        'virtual-list': virtualList,
+    },
     name: 'Searchbar',
     props: {
         movieList : Array
@@ -80,10 +86,14 @@ export default {
             selectedMovieBudgetString: "",
             selectedMovieTotalRevenueString: "",
             selectedSortingOrder: null, // this holds the current sorting function, e.g. sort by alphabet or by rating
-            currentScrollPosition: 0,
-            updateCurrentScrollPosition: false,
             posterPlaceHolder: "poster-placeholder.jpg",
             isSelected: false,
+        }
+    },
+    watch: {
+        filteredList: function() {
+            const vList = this.$refs.list;
+            vList.forceRender();
         }
     },
     methods: {
@@ -139,14 +149,12 @@ export default {
                 this.selectedMovieTotalRevenueString = this.valueFormat(movie.foreign_total_gross + movie.domestic_total_gross);
                 this.isSelected = true;
                 this.search = this.selectedMovieName;
-                this.currentScrollPosition = $(".wrapper").scrollTop();
                 this.$emit('movie-selection', movie.id);
             } else {
                 //TODO: perhaps change this so that this happens when you click on a reset button instead of the entire card
                 this.isSelected = false;
                 this.selectedMovieName = "";
                 this.search = "";
-                this.updateCurrentScrollPosition = true;
 
                 this.$emit('reset');
             }
@@ -156,22 +164,14 @@ export default {
                 this.isSelected = false;
                 this.selectedMovieName = "";
             }
-            this.currentScrollPosition = 0;
-            this.updateCurrentScrollPosition = true;
         },
         hasSortingOrderChanged(sortingOrder) {
             if(sortingOrder === this.alphabeticOrder && this.selectedSortingOrder !== this.alphabeticOrder) {
                 this.selectedSortingOrder = this.alphabeticOrder;
-                this.currentScrollPosition = 0;
-                this.updateCurrentScrollPosition = true;
             } else if(sortingOrder === this.ratingOrder && this.selectedSortingOrder !== this.ratingOrder) {
                 this.selectedSortingOrder = this.ratingOrder;
-                this.currentScrollPosition = 0;
-                this.updateCurrentScrollPosition = true;
             } else if(sortingOrder === this.revenueOrder && this.selectedSortingOrder !== this.revenueOrder) {
                 this.selectedSortingOrder = this.revenueOrder;
-                this.currentScrollPosition = 0;
-                this.updateCurrentScrollPosition = true;
             }
         },
         getImage(movie) {
@@ -190,20 +190,23 @@ export default {
         filteredList() {
             if (this.isSelected) {
                 return this.movieList.filter(post => {
-                    return post.title == this.search;
+                    if (post.title.startsWith('World')) {
+                        console.log("search: " + this.search + "; post: " + post.title)
+                    }
+                    return post.title.toLowerCase() == this.search.toLowerCase();
                 })
             }
             /* Filter and Sort in Alphabetic order*/
             if(this.selectedSortingOrder === this.alphabeticOrder) {
                 return this.movieList.filter(post => {
                     return post.title.toLowerCase().startsWith(this.search.toLowerCase());
-                }).sort(this.selectedSortingOrder).slice(0,700) // sorts and slices it for display
+                }).sort(this.selectedSortingOrder) // sorts and slices it for display
             }
             /* Filter and Sort in Rating order*/
             else if(this.selectedSortingOrder === this.ratingOrder) {
                 return this.movieList.filter(post => {
                     return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating !== undefined;
-                }).sort(this.selectedSortingOrder).slice(0,700)
+                }).sort(this.selectedSortingOrder)
                     // add the remaining movies that are without ratings
                     .concat(this.movieList.filter(post => {
                         return post.title.toLowerCase().startsWith(this.search.toLowerCase()) && post.rating === undefined;
@@ -214,7 +217,7 @@ export default {
                 return this.movieList.filter(post => {
                     return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
                         (post['domestic_total_gross'] !== undefined && post['foreign_total_gross'] !== undefined);
-                }).sort(this.selectedSortingOrder).slice(0,700)
+                }).sort(this.selectedSortingOrder)
                     // add the remaining movies that are missing either one or both of the total grosses
                     .concat(this.movieList.filter(post => {
                         return post.title.toLowerCase().startsWith(this.search.toLowerCase()) &&
@@ -228,13 +231,6 @@ export default {
       we need to add the sorting function here to prevent exceptions*/
     created: function () {
         this.selectedSortingOrder = this.alphabeticOrder;
-    },
-    /*this is called after a data change */
-    updated: function () {
-        if(this.updateCurrentScrollPosition) {
-            $('.wrapper').scrollTop(this.currentScrollPosition);
-            this.updateCurrentScrollPosition = false;
-        }
     }
 
 }
