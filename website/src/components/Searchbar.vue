@@ -188,6 +188,11 @@ export default {
     },
     computed: {
         filteredList() {
+            if (this.isSelected) {
+                return this.movieList.filter(post => {
+                    return post.title == this.search;
+                })
+            }
             /* Filter and Sort in Alphabetic order*/
             if(this.selectedSortingOrder === this.alphabeticOrder) {
                 return this.movieList.filter(post => {
