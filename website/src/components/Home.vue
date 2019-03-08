@@ -20,7 +20,7 @@
         </div>
         <Map v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"
             v-bind:mode="mode" v-bind:scale="scale" v-bind:year="year"/>
-        <Timeline v-on:selection-change="year=$event"
+        <Timeline id="timeline"  v-on:selection-change="year=$event"
                         v-on:deselect-year="year='2000 - 2019'"
         />
       </div>
@@ -84,6 +84,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#timeline {
+  margin-top: 1em;
+}
 h3 {
   margin: 40px 0 0;
 }

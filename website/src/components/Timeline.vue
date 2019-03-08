@@ -1,8 +1,9 @@
 <template>
     <div class="timeline">
+        <h4>Selected year: {{yearString}}</h4>
         <div class="row">
             <div class="col-sm-1">
-                <p style="margin: 5px; font-weight:bold">Select Year:</p>
+                <p style="margin: .5em; font-weight:bold"> Release Year:</p>
             </div>
             <div class="col-sm-9">
                 <b-form-input class="custom-range" type="range" id="timeline" v-model="year"
@@ -14,7 +15,6 @@
                 <b-button v-on:click="deselectYear" style="margin-right:2px">Deselect Year</b-button>
             </div>
         </div>
-<p>Selected year: {{yearString}}</p>
     </div>
 </template>
 
@@ -51,7 +51,7 @@ export default {
 <style>
 #timeline {
     background: #212121;
-    margin: 10px;
+    margin: 1em;
 }
 </style>
 
