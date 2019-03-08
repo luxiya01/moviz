@@ -31,7 +31,10 @@ export default {
       return {
         population: population,
         // from colorbrewer (http://colorbrewer2.org/)
-        colours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
+        defaultColours : ["#fff5f0", "#fee0d2","#fcbba1","#fc9272","#fb6a4a","#ef3b2c","#cb181d","#a50f15","#67000d"],
+        ratingColours: ['#fff5eb','#fee6ce','#fdd0a2','#fdae6b','#fd8d3c','#f16913','#d94801','#a63603','#7f2704'],
+        movieColours: ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#4292c6','#2171b5','#08519c','#08306b'],
+        colours: null,
         //Map dimensions (in pixels)
         width : 900,
         height : 500,
@@ -105,6 +108,7 @@ export default {
       },
       scale: function(val, preVal) {
           if (val == 'per-capita' && preVal == 'total') {
+              this.co
               this.updateMapHelper(this.currentData);
           }
           if (val == 'total' && preVal == 'per-capita') {
@@ -198,6 +202,13 @@ export default {
       
     },
       updateMapHelper: function(data) {
+          if (this.mode == 'imdb-rating') {
+              this.colours = this.ratingColours;
+          } else if (this.movieid != '') {
+              this.colours = this.movieColours;
+          } else {
+              this.colours = this.defaultColours;
+          }
           var currentComponent = this;
           this.currentData = data;
 
@@ -356,6 +367,7 @@ export default {
   },
   mounted() {
       this.loadTotalRevenue();
+      this.colours = this.defaultColours;
   }
 }
 </script>

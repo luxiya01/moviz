@@ -190,9 +190,6 @@ export default {
         filteredList() {
             if (this.isSelected) {
                 return this.movieList.filter(post => {
-                    if (post.title.startsWith('World')) {
-                        console.log("search: " + this.search + "; post: " + post.title)
-                    }
                     return post.title.toLowerCase() == this.search.toLowerCase();
                 })
             }
