@@ -146,7 +146,6 @@ export default {
 
         var tmp = {};
         Object.entries(rating_sum).forEach(function(d) {
-            console.log(d)
             if (num_movies[d[0]] > 0) {
                 tmp[d[0]] = d[1]/num_movies[d[0]];
             }
@@ -176,7 +175,6 @@ export default {
             }
         }
         );
-        console.log(tmp)
         this.updateMapHelper(tmp)
     },
     // function takes a movie id as input and repaints the map
