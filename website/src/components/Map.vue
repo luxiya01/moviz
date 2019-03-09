@@ -85,6 +85,15 @@ export default {
       }
   },
   watch: {
+      centered: function() {
+          var selection;
+          if (this.centered) {
+               selection = this.centered.properties.name;
+          } else {
+              selection = '';
+          }
+          this.$emit('countryClicked', selection);
+      },
       year: function(val, preVal) {
           if (this.mode == 'imdb-rating') {
               this.changeYearRating()
