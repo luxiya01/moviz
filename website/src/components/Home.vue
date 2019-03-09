@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-9">
         <div class="row">
             <div class="col-sm-8">
                 <Button 
@@ -19,15 +19,17 @@
             </div>
         </div>
         <Map v-bind:movieJSON="movieJSON" v-bind:movieid="movieid"
-            v-bind:mode="mode" v-bind:scale="scale" v-bind:year="year"/>
+            v-bind:mode="mode" v-bind:scale="scale" v-bind:year="year"
+            v-on:countryClicked="countryClicked=$event"/>
         <Timeline id="timeline"  v-on:selection-change="year=$event"
                         v-on:deselect-year="year='2000 - 2019'"
         />
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <Searchbar v-bind:movieList="movieList" v-if="mode=='revenue'"
         v-on:movie-selection="movieid=$event"
         v-on:reset="movieid=''"/>
+
       </div>
     </div>
   </div>
@@ -57,19 +59,15 @@ export default {
           year: '2000 - 2019',
           movieJSON: movieJSON,
           movieList: Object.values(movieJSON),
+          countryClicked: ''
       }
   },
   watch: {
+      countryClicked: function() {
+          this.updateMovieList();
+      },
       year: function() {
-          var tmp = this.year;
-
-          if (tmp == '2000 - 2019') {
-              this.movieList = Object.values(movieJSON);
-          } else {
-              this.movieList = Object.values(movieJSON).filter(function (el) {
-                  return el.release_year == tmp;
-              })
-          }
+          this.updateMovieList();
       }
   },
   computed: {
@@ -78,6 +76,30 @@ export default {
       }
   },
   methods: {
+      updateMovieList() {
+          var year = this.year;
+          var country = this.countryClicked;
+          var tmpData;
+
+          if (year == '2000 - 2019') {
+              tmpData = Object.values(movieJSON);
+          } else {
+              tmpData = Object.values(movieJSON).filter(function (el) {
+                  return el.release_year == year;
+              })
+          }
+          if (this.countryClicked == '') {
+              this.movieList = tmpData;
+          } else {
+              this.movieList = tmpData.filter(function (el) {
+                  if (el.country) {
+                      return el.country.includes(country);
+                  } else {
+                      return false;
+                  }
+              })
+          }
+      }
     }
 }
 </script>
