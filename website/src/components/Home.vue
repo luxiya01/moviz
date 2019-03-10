@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <div class="row">
-      <div class="col-sm-9">
+    <div class="row" style="width:85em;">
+      <div class="col-sm-9" >
         <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-8" >
                 <Button 
                     v-bind:options="[
                         {text: 'Revenue', value: 'revenue'},
-                        {text: 'Average IMDB Rating', value: 'imdb-rating'}]"
+                        {text: 'World average IMDB Rating', value: 'imdb-rating'}]"
                     v-on:selection-change="mode=$event"/>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" >
                 <Button v-if="mode=='revenue'"
                     v-bind:options="[
                         {text: 'Total', value: 'total'},
@@ -25,8 +25,8 @@
                         v-on:deselect-year="year='2000 - 2019'"
         />
       </div>
-      <div class="col-sm-3">
-        <Searchbar v-bind:movieList="movieList" v-if="mode=='revenue'"
+      <div class="col-sm-3" >
+        <Searchbar  v-bind:movieList="movieList" v-if="mode=='revenue'"
         v-on:movie-selection="movieid=$event"
         v-on:reset="movieid=''"/>
 

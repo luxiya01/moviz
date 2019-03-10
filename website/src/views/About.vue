@@ -104,7 +104,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Alvaro Ortega Mattsson</p>
+              <b>Alvaro Ortega Mattsson</b>
               <p>Project leader / Front-end</p>
               <a href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -116,7 +116,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Linette Nilsson</p>
+              <b>Linette Nilsson</b>
               <p>Front-end / UX</p>              
               <a href="https://github.com/lillan95"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/in/linette-nilsson/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -128,7 +128,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Mats</p>
+              <b>Mats</b>
               <p>Front-end</p>
               <a href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -142,7 +142,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Axel Swaretz</p>
+              <b>Axel Swaretz</b>
               <p>Front-end</p>
               <a href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -154,7 +154,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Li Ling</p>
+              <b>Li Ling</b>
               <p>Front-end / Back-end</p>
               <a href="https://github.com/luxiya01"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -166,7 +166,7 @@
                   <b class="text">View my contribution!</b>
                 </div>
               </div>
-              <p>Rodrigo</p>
+              <b>Rodrigo</b>
               <p>Back-end</p>
               <a href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
               <a href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
@@ -188,18 +188,18 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
+      <p align="left"> 
         - one
         - two
         - three
-      </pre>
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
+      <p align="left"> 
         - one
         - two
         - three
-      </pre>
+      </p>
     </div>
   </b-modal>
 
@@ -212,18 +212,14 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        Throughout this project I’ve been in charge of the look and feel of the application. I designed and made the <b><a href="https://app.evrybo.com/project/17590-OCjoqUf9LpxeLn2HEHgPVKQc5WTnM5uAINZ8HeitEPHqd/preview" >clickable prototype</a></b> for this project. Then I set up the Vue project together with Rodrigo and later focused on constructing the “About” page. At the end of the project I focused mostly on fine tuning the css for a cohesive aesthetic of the website. 
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        I learned that it takes a lot of effort, experience and knowledge to convey information in an intuitive way for the end users. I feel that I’ve gained some experience and knowledge during this project and I hope to use them in any future projects. I’ve also got to improve my knowledge of CSS and learned to use a new framework (Vue.js).
+      </p>
     </div>
   </b-modal>
 
@@ -238,12 +234,12 @@
       <h3>Contributions</h3>
       
       <p align="left" style="margin-top:1em;"> 
-        Praesent a dui quam. Mauris porttitor magna et nunc condimentum pharetra. Quisque sit amet tortor quis augue aliquet mattis. Nam ullamcorper sodales hendrerit. Etiam eu consequat neque. Morbi varius sit amet sem ut varius. Sed eu dolor bibendum neque aliquet dignissim vitae id dui. Duis bibendum metus in tellus tincidunt aliquam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+        I mainly worked with the D3 part of the front-end, and more specifically the map and map functions. I selected what template and projection to use in the map. I wrote map functions and helped a bit with the communication between the front end parts. When merging the parts inside the Vue framework I assisted Li (who did all the heavy Vue lifting) with the integration.
       </p>
 
       <h3>What I learned</h3>
       <p align="left"> 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed elit odio, varius sagittis finibus at, ornare non arcu. Nam facilisis risus sit amet orci cursus accumsan. Pellentesque rhoncus mattis enim, ac aliquet leo accumsan ac. Quisque laoreet lacinia eros. Aliquam erat volutpat. Ut felis est, vulputate a congue vitae, dictum et dui. Ut aliquet sodales mi, a hendrerit tortor. 
+        I learned a lot! Mainly about web programming in general. I went from a total beginner in JS, HTML and CSS to getting a grasp of the main parts. I also learned about how tedious database management and integration can be by seeing the effort my teammates put in. Finally I learned about D3 and got inspiration for future endeavours.
       </p>
     </div>
   </b-modal>
@@ -257,18 +253,14 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        I have worked mainly with vue.js and the search bar in both a programming aspect as well as a research aspect. To be more specific I have worked on enabling accordion behavior in the filter list as well as general design of the search bar. I have also contributed to the about video in both writing the script and recording all audio and video demonstrations.
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        I have learned that in such a big group project communication is key. My understanding of both JavaScript and vue.js has increased and I have learned how to more effectively utilize these tools and how to implement these tools with D3 while still preserving functionality. I have also learned that voice acting is a lot harder than one might think it is.
+      </p>
     </div>
   </b-modal>
 
@@ -281,18 +273,18 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
+      <p align="left"> 
         - one
         - two
         - three
-      </pre>
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
+      <p align="left"> 
         - one
         - two
         - three
-      </pre>
+      </p>
     </div>
   </b-modal>
 
@@ -305,18 +297,14 @@
     <br/>
     <div class="modalView">
       <h3>Contributions</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        Most of my working time in this project was spent in the backend. My main tasks where gathering data and preprocessing data. I did this by scraping various pages on boxofficemojo for each movie and merging it together with Li’s data from IMDB. I also helped on the front end with some Vue and CSS things.
+      </p>
 
       <h3>What I learned</h3>
-      <pre align="left"> 
-        - one
-        - two
-        - three
-      </pre>
+      <p align="left"> 
+        I learned that data is not always easy to gather and even if it is it will probably still not be easy to use. Fields will be missing, random values will appear or the data will have the same key as you but slightly different in an annoying way. I learned the basics of web scraping together with more thorough understanding of CSS selectors and HTML structure.
+      </p>
     </div>
   </b-modal>
   </div>
@@ -330,13 +318,20 @@
 .modalView {
   color: black;
 }
+.modalView h3{
+  margin-top: .5em;
+}
+
+.modalView h4{
+  margin: 0;
+}
 .members {
   position: relative;
   /*width: 50%;*/
   border-radius: 15px;
   /*background: #502c2e;*/
   padding: 20px; 
-  margin: 0 2em 0 2em;
+  margin: 0 2em .5em 2em;
   width: 200px;
   height: 150px; 
 }
@@ -391,7 +386,7 @@ p {
   margin-bottom: 2em;
 }
 #tools{
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 #team{
   padding: 0 0 2em 0 ;

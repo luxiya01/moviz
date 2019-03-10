@@ -5,7 +5,7 @@
             <div class="col-sm-1">
                 <p style="margin: .5em; font-weight:bold"> Release Year:</p>
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9" >
                 <b-form-input class="custom-range" type="range" id="timeline" v-model="year"
                             min="2000" max="2020" step="1"
                             v-on:input="signalChange"

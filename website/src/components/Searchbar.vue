@@ -24,8 +24,8 @@
         </label>
     </div>
 
-    <div class="wrapper">
-        <virtual-list :size="80" :remain="5" ref="list">
+    <div class="wrapper" >
+        <virtual-list id="searchContent" :size="80" :remain="5" ref="list">
             <div class="card" v-for="movie in filteredList" v-on:click="selectMovie(movie)" v-bind:key="movie.id">
                 <div class="topCard">
                     <img v-bind:src="getImage(movie)"/>
@@ -279,12 +279,14 @@ div#searchbar .search-wrapper input::-webkit-input-placeholder {
     color: rgba(0, 0, 0, .50);
     font-weight: 100;
 }
-
+#searchContent{
+    height: 36em !important;
+}
 div#searchbar .wrapper {
     display: block;
-    
-    width: 25em;
-    height: 70vh;
+    width: 20em;
+    /*width: 25em;*/
+    height: 80vh;
     overflow: auto;
     margin-top:12px;
     padding-top: 0;

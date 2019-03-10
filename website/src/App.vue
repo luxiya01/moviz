@@ -22,7 +22,7 @@
           </div>
       </div>
     </div>
-    <div class="viewing" style="margin: 2em 0 0 5em; z-index: -10;">
+    <div class="viewing" style="padding: 2em 0 0 5em; z-index: -10;">
       <router-view />
     </div>
 
