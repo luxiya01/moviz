@@ -1,0 +1,502 @@
+{
+    "Turkey": {
+        "count": 2205,
+        "revenue": 1565237947
+    },
+    "Central America": {
+        "count": 308,
+        "revenue": 109963085
+    },
+    "Guatemala": {
+        "count": 2,
+        "revenue": 637511
+    },
+    "Cambodia": {
+        "count": 12,
+        "revenue": 656690
+    },
+    "Portugal": {
+        "count": 2485,
+        "revenue": 1320180203
+    },
+    "New Zealand": {
+        "count": 2930,
+        "revenue": 1913846742
+    },
+    "USA": {
+        "count": 5700,
+        "revenue": 189127764065
+    },
+    "Malta": {
+        "count": 1,
+        "revenue": 525041
+    },
+    "El Salvador": {
+        "count": 3,
+        "revenue": 435177
+    },
+    "Reunion": {
+        "count": 1,
+        "revenue": 106712
+    },
+    "Austria": {
+        "count": 2475,
+        "revenue": 2126633843
+    },
+    "Croatia": {
+        "count": 1513,
+        "revenue": 209833666
+    },
+    "Lithuania": {
+        "count": 1287,
+        "revenue": 138413561
+    },
+    "Russia": {
+        "count": 2398,
+        "revenue": 9877652441
+    },
+    "Morocco": {
+        "count": 1,
+        "revenue": 150000
+    },
+    "United Kingdom": {
+        "count": 3855,
+        "revenue": 28213978288
+    },
+    "Lesser Antilles": {
+        "count": 210,
+        "revenue": 15941140
+    },
+    "Cyprus": {
+        "count": 175,
+        "revenue": 14329138
+    },
+    "Bulgaria": {
+        "count": 1783,
+        "revenue": 287390095
+    },
+    "Israel": {
+        "count": 1065,
+        "revenue": 893706038
+    },
+    "South Korea": {
+        "count": 2011,
+        "revenue": 10426165095
+    },
+    "Curacao": {
+        "count": 91,
+        "revenue": 2527070
+    },
+    "Norway": {
+        "count": 2183,
+        "revenue": 1949067770
+    },
+    "Spain": {
+        "count": 3257,
+        "revenue": 11223945890
+    },
+    "Qatar": {
+        "count": 318,
+        "revenue": 51604324
+    },
+    "Slovakia": {
+        "count": 1458,
+        "revenue": 242537927
+    },
+    "Chile": {
+        "count": 1913,
+        "revenue": 1218118170
+    },
+    "Colombia": {
+        "count": 1704,
+        "revenue": 1673867054
+    },
+    "Lebanon": {
+        "count": 1861,
+        "revenue": 232298294
+    },
+    "Trinidad & Tobago": {
+        "count": 119,
+        "revenue": 24771782
+    },
+    "Ecuador": {
+        "count": 1315,
+        "revenue": 545415706
+    },
+    "Switzerland (Italian-speaking)": {
+        "count": 48,
+        "revenue": 2173169
+    },
+    "Pakistan": {
+        "count": 109,
+        "revenue": 15215870
+    },
+    "Southern Africa": {
+        "count": 44,
+        "revenue": 23367967
+    },
+    "Bolivia": {
+        "count": 1516,
+        "revenue": 233745411
+    },
+    "Belgium": {
+        "count": 2317,
+        "revenue": 2323474288
+    },
+    "Yugoslavia": {
+        "count": 1,
+        "revenue": 45244
+    },
+    "Venezuela": {
+        "count": 1521,
+        "revenue": 1968664154
+    },
+    "Ireland": {
+        "count": 1,
+        "revenue": 3000000
+    },
+    "South, East and West Africa": {
+        "count": 48,
+        "revenue": 25429155
+    },
+    "Romania": {
+        "count": 1431,
+        "revenue": 383384185
+    },
+    "Iraq": {
+        "count": 6,
+        "revenue": 203213
+    },
+    "Estonia": {
+        "count": 946,
+        "revenue": 91185768
+    },
+    "Greece and Cyprus": {
+        "count": 29,
+        "revenue": 30349211
+    },
+    "Puerto Rico": {
+        "count": 221,
+        "revenue": 114069047
+    },
+    "Jordan": {
+        "count": 330,
+        "revenue": 24480833
+    },
+    "Germany": {
+        "count": 3031,
+        "revenue": 15904889507
+    },
+    "Saudi Arabia": {
+        "count": 2,
+        "revenue": 19997
+    },
+    "Sri Lanka": {
+        "count": 7,
+        "revenue": 543278
+    },
+    "Panama": {
+        "count": 112,
+        "revenue": 67014982
+    },
+    "United Arab Emirates": {
+        "count": 2227,
+        "revenue": 1576650306
+    },
+    "Middle East + UAE": {
+        "count": 69,
+        "revenue": 38747604
+    },
+    "Baltic States": {
+        "count": 20,
+        "revenue": 3845730
+    },
+    "India": {
+        "count": 898,
+        "revenue": 2846558641
+    },
+    "West Indies": {
+        "count": 26,
+        "revenue": 3209267
+    },
+    "Middle East Other": {
+        "count": 104,
+        "revenue": 37049989
+    },
+    "Japan": {
+        "count": 1451,
+        "revenue": 16021910912
+    },
+    "Thailand": {
+        "count": 1739,
+        "revenue": 1324379564
+    },
+    "Indonesia": {
+        "count": 716,
+        "revenue": 1113632710
+    },
+    "Finland": {
+        "count": 1921,
+        "revenue": 1009172179
+    },
+    "Malaysia": {
+        "count": 1495,
+        "revenue": 1720929828
+    },
+    "Djibouti": {
+        "count": 1,
+        "revenue": 40000
+    },
+    "Mexico": {
+        "count": 2863,
+        "revenue": 10881072474
+    },
+    "Kenya": {
+        "count": 191,
+        "revenue": 11878926
+    },
+    "Bahrain": {
+        "count": 477,
+        "revenue": 65081978
+    },
+    "Ethiopia": {
+        "count": 90,
+        "revenue": 596369
+    },
+    "Middle East": {
+        "count": 10,
+        "revenue": 5062511
+    },
+    "Canada": {
+        "count": 3,
+        "revenue": 7041832
+    },
+    "Laos": {
+        "count": 1,
+        "revenue": 177721
+    },
+    "Ghana": {
+        "count": 247,
+        "revenue": 15481733
+    },
+    "East & West Africa": {
+        "count": 6,
+        "revenue": 1153606
+    },
+    "Honduras": {
+        "count": 33,
+        "revenue": 1318829
+    },
+    "Hong Kong": {
+        "count": 2040,
+        "revenue": 2157460950
+    },
+    "Australia": {
+        "count": 3568,
+        "revenue": 14151000408
+    },
+    "Peru": {
+        "count": 1754,
+        "revenue": 1097960354
+    },
+    "Switzerland (French and Italian Speaking)": {
+        "count": 2,
+        "revenue": 108684
+    },
+    "Sweden": {
+        "count": 1828,
+        "revenue": 2449100136
+    },
+    "Singapore": {
+        "count": 1996,
+        "revenue": 1584750260
+    },
+    "Italy": {
+        "count": 2875,
+        "revenue": 9149726516
+    },
+    "Bangladesh": {
+        "count": 5,
+        "revenue": 345464
+    },
+    "Czech Republic": {
+        "count": 2007,
+        "revenue": 756315689
+    },
+    "Mongolia": {
+        "count": 49,
+        "revenue": 6659602
+    },
+    "Hungary": {
+        "count": 1819,
+        "revenue": 774286675
+    },
+    "Macedonia": {
+        "count": 18,
+        "revenue": 63445
+    },
+    "Ukraine": {
+        "count": 1423,
+        "revenue": 839573127
+    },
+    "Netherlands": {
+        "count": 2552,
+        "revenue": 3615009857
+    },
+    "Greece": {
+        "count": 2164,
+        "revenue": 1346747478
+    },
+    "Slovenia": {
+        "count": 1499,
+        "revenue": 166152049
+    },
+    "Denmark": {
+        "count": 1748,
+        "revenue": 1804531839
+    },
+    "Latvia": {
+        "count": 1001,
+        "revenue": 89962863
+    },
+    "Jamaica": {
+        "count": 242,
+        "revenue": 15016033
+    },
+    "Syria": {
+        "count": 38,
+        "revenue": 1315383
+    },
+    "South Africa": {
+        "count": 2642,
+        "revenue": 1337664180
+    },
+    "Oman": {
+        "count": 438,
+        "revenue": 24905865
+    },
+    "Philippines": {
+        "count": 1546,
+        "revenue": 1454356264
+    },
+    "Dominican Republic": {
+        "count": 280,
+        "revenue": 27189677
+    },
+    "Iceland": {
+        "count": 2041,
+        "revenue": 192909037
+    },
+    "China": {
+        "count": 599,
+        "revenue": 26504772988
+    },
+    "France": {
+        "count": 2988,
+        "revenue": 16744081120
+    },
+    "Kuwait": {
+        "count": 299,
+        "revenue": 79842806
+    },
+    "Palestine": {
+        "count": 8,
+        "revenue": 8028886
+    },
+    "Brazil": {
+        "count": 2312,
+        "revenue": 8014383057
+    },
+    "Nigeria": {
+        "count": 708,
+        "revenue": 39179430
+    },
+    "New Caledonia": {
+        "count": 1,
+        "revenue": 122001
+    },
+    "Argentina": {
+        "count": 2365,
+        "revenue": 2426981284
+    },
+    "Netherlands Antilles": {
+        "count": 4,
+        "revenue": 1594860
+    },
+    "East Africa": {
+        "count": 648,
+        "revenue": 39758931
+    },
+    "Iran": {
+        "count": 2,
+        "revenue": 36000
+    },
+    "Serbia & Montenegro": {
+        "count": 1356,
+        "revenue": 96159906
+    },
+    "Taiwan": {
+        "count": 1787,
+        "revenue": 2218185721
+    },
+    "Russia and Ukraine": {
+        "count": 21,
+        "revenue": 52454829
+    },
+    "Uruguay": {
+        "count": 1699,
+        "revenue": 169542882
+    },
+    "Aruba": {
+        "count": 115,
+        "revenue": 2934591
+    },
+    "Poland": {
+        "count": 2022,
+        "revenue": 2285945648
+    },
+    "Tunisia": {
+        "count": 1,
+        "revenue": 60980
+    },
+    "Costa Rica": {
+        "count": 39,
+        "revenue": 2854873
+    },
+    "Czech Republic/Slovakia": {
+        "count": 188,
+        "revenue": 101592518
+    },
+    "Paraguay": {
+        "count": 280,
+        "revenue": 22199979
+    },
+    "Lebanon/United Arab Emirates": {
+        "count": 14,
+        "revenue": 6544089
+    },
+    "Nicaragua": {
+        "count": 30,
+        "revenue": 754157
+    },
+    "Mauritius Island": {
+        "count": 2,
+        "revenue": 109714
+    },
+    "Central America and the Greater Antilles": {
+        "count": 253,
+        "revenue": 134085191
+    },
+    "Egypt": {
+        "count": 1372,
+        "revenue": 172610535
+    },
+    "Switzerland": {
+        "count": 1189,
+        "revenue": 1536218919
+    },
+    "Vietnam": {
+        "count": 384,
+        "revenue": 201803396
+    }
+}
