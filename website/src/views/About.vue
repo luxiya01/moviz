@@ -1,13 +1,9 @@
 <template>
-
   <div class="about">    
-    
-
     <div  class="container">
       <div id="project" class="container">
-        <h3 class="underline"><b>PROJECT</b></h3>
         <!--<font-awesome-icon icon="coffee" /> -->
-        <p>VIDEO HERE</p>
+        <iframe id='video' src="https://www.youtube.com/embed/whaFhgPIeSY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         <div class="row">
           <p id="summary" >
             A visualization of movies produced and consumed over the world for the course <i>Information visualization</i> given at the Royal institute of technology, Stockholm.
@@ -113,8 +109,8 @@
               </div>
               <b>Alvaro Ortega Mattsson</b>
               <p>Project leader / Front-end</p>
-              <a target="_blank" href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
-              <a target="_blank" href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
+              <a target="_blank" href="https://github.com/aog9128"> <i class="fab fa-2x fa-github-square"></i></a>
+              <a target="_blank" href="https://www.linkedin.com/in/alvaro-ortega-mattsson-3845a611b/"> <i class="fab fa-2x fa-linkedin"></i></a>
             </div>
 
             <div class="teamM">
@@ -137,8 +133,8 @@
               </div>
               <b>Mats</b>
               <p>Front-end</p>
-              <a target="_blank" href="https://www.github.com"> <i class="fab fa-2x fa-github-square"></i></a>
-              <a target="_blank" href="https://www.linkedin.com/"> <i class="fab fa-2x fa-linkedin"></i></a>
+              <a target="_blank" href="https://github.com/Matski14"> <i class="fab fa-2x fa-github-square"></i></a>
+              <a target="_blank" href="https://www.linkedin.com/in/mats-andersson/"> <i class="fab fa-2x fa-linkedin"></i></a>
             </div>
           </div>
 
@@ -196,16 +192,12 @@
     <div class="modalView">
       <h3>Contributions</h3>
       <p align="left"> 
-        - one
-        - two
-        - three
+        I have mainly worked on the search bar of the page by creating the foundation of the search functionality and also the different sorting functions. I have also throughout the project been responsible for planning our meetings and taking notes of what has been said during them in our blogg as well as being responsible for the editing of the demo video of the project with some collaboration from Axel. 
       </p>
 
       <h3>What I learned</h3>
       <p align="left"> 
-        - one
-        - two
-        - three
+        I have learned a lot about Vue.js how you implement it on a larger project as well as a lot about JavaScript in general and how to handle Json files. I have also learned how to collaborate in a larger group and how to distribute workloads to everyone in the group.
       </p>
     </div>
   </b-modal>
@@ -279,18 +271,14 @@
     </div>
     <br/>
     <div class="modalView">
-      <h3>Contributions</h3>
+      <h3 class="lih3">Contributions</h3>
       <p align="left"> 
-        - one
-        - two
-        - three
+        I contributed to both front-end and back-end. For front-end, I re-factored Mats' choropleth map into a Vue component; implemented the selection buttons and the release year slider that control both the visualization and the search content; added legend to the map and optimized the search bar performance. For back-end, I scraped movie details from IMDB. I also handled website deployment, github repo and miscellaneous debugging. 
       </p>
 
-      <h3>What I learned</h3>
+      <h3 class="" >What I learned</h3>
       <p align="left"> 
-        - one
-        - two
-        - three
+        For front-end, I learned a new framework (Vue.js) and how to structure and communicate data between various Vue components and d3. For back-end, I learned how to scrape data using Python, and how to handle missing data. I learned website deployment using GitHub pages for projects. Most importantly, I gained confidence in my ability to learn anything new.
       </p>
     </div>
   </b-modal>
@@ -307,7 +295,6 @@
       <p align="left"> 
         Most of my working time in this project was spent in the backend. My main tasks where gathering data and preprocessing data. I did this by scraping various pages on boxofficemojo for each movie and merging it together with Li’s data from IMDB. I also helped on the front end with some Vue and CSS things.
       </p>
-
       <h3>What I learned</h3>
       <p align="left"> 
         I learned that data is not always easy to gather and even if it is it will probably still not be easy to use. Fields will be missing, random values will appear or the data will have the same key as you but slightly different in an annoying way. I learned the basics of web scraping together with more thorough understanding of CSS selectors and HTML structure.
@@ -322,6 +309,13 @@
 
 
 <style >
+#video{
+  width: 100%;
+  height: 34em;
+}
+.lih3{
+  margin-top: 0 !important;
+}
 .modalView {
   color: black;
 }
@@ -368,6 +362,7 @@ a button {
   background-size: cover;  
   background-position: 0px -15px;
 }
+
 .mats{
   background-image: url("https://firebasestorage.googleapis.com/v0/b/ivis19-ccc21.appspot.com/o/mats.jpg?alt=media&token=8f041aa4-7d11-4d56-944a-1878407124f8");
   background-size: cover;
