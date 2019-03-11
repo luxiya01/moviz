@@ -8,7 +8,7 @@
           <p id="summary" >
             A visualization of movies produced and consumed over the world for the course <i>Information visualization</i> given at the Royal institute of technology, Stockholm.
             For our visualization we used data from <b><a target="_blank" href="https://www.boxofficemojo.com"> Box Office Mojo</a></b> and 
-            <b><a target="_blank" href="https://www.imdb.com/"><abbr title="Internet Movie Database">IMDb</abbr></a></b>.
+            <b><a target="_blank" href="https://www.imdb.com/"><abbr title="Internet Movie Database">IMDb</abbr></a></b>. The database consists of ~5700 movies produced during 2000 and 2019.
           </p>
         </div>
         <br/>
